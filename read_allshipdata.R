@@ -1,7 +1,7 @@
 # Import the data about piracy attacks into 
 
 # set working directories 
-try(setwd("cody"))
+try(setwd("/Users/codykoebnick/Downloads/MaritimePiracy"))
 try(setwd("bjorns"))
 
 #import data with the rio package the swiss army knife
