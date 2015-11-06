@@ -8,9 +8,10 @@ getwd()
 #import data with the rio package the swiss army knife
 library(rio)
 shipping <- import('all_shipdata_update.dta')
+  # Cody's import craziness
+  # install.packages("haven")
 
-######## Cody's import craziness
-####install.packages("haven")
+# Basic descriptive statistics 
 
 #estimate model
 logit1 <- glm(notyemen ~ as.factor(shiptype) + as.factor(shipcategory), data = shipping, familiy = "binominal")
