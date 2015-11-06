@@ -1,4 +1,8 @@
 # Import the data about piracy attacks into 
+  # Libraries we need for the project, make sure you have them installed
+library(rio)
+library(heaven)
+
 
 # set working directories 
 try(setwd("/Users/codykoebnick/Downloads/Data Set"))
@@ -13,10 +17,12 @@ shipping <- import('all_shipdata_update.dta')
 
 # Basic descriptive statistics 
 
+
 #estimate model
 logit1 <- glm(notyemen ~ as.factor(shiptype) + as.factor(shipcategory), data = shipping, familiy = "binominal")
 lm(logit1)
+
+
+
 library(knitr)
-
-
 kable(fitted)
