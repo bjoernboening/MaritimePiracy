@@ -1,16 +1,4 @@
-#######session 06###
-
-#testing 
-#cars <- mtcars
-#ols <- lm(mpg ~ hp + am, family = "binominal") # family is the stochastic component and hp am is the 
-#lm(ols)
-
-# OLS regression with allshipdatar
-#library(foreign)
-#setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/03_Data/Traxler/Daten Traxler")
-#read.dta(all_shipdata_update.dta, convert.dates = TRUE, convert.factors = TRUE,
-#         missing.type = FALSE,
-#         convert.underscore = FALSE, warn.missing.labels = TRUE)
+# Import the data about piracy attacks into 
 
 library(rio)
 setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Traxler")
