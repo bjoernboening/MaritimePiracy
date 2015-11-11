@@ -2,11 +2,12 @@
   # Libraries we need for the project, make sure you have them installed
 library(rio)
 library(dplyr)
-
+library(ggplot2)
+attach(shipping)
 
 # set working directories 
 try(setwd("/Users/codykoebnick/Downloads/Data Set"))
-try(setwd("E:/bjoer/Documents/Google Drive/Universit?t/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
+try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
 getwd()
 
 #import data with the rio package the swiss army knife
@@ -19,6 +20,8 @@ CountYrCtry
 shipping$CountYrCtryVar2  <- table (shipping$year, shipping$closest_coastal_state)
 
 # try to remove missing values from incident_type, so far no success
+
+attacks <- subset(shipping, incident_type = "")
 attacks <- shipping %>% filter(!is.na(incident_type) %>% droplevels()
 str(attacks)
 
