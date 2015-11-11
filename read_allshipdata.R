@@ -12,6 +12,12 @@ getwd()
 #import data with the rio package the swiss army knife
 shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";")
 
+#Creating a new variable for frequency count of attacks per country per year
+#data.frame ( table ( data$Group, data$Size ) )
+CountYrCtry <- table (shipping$year, shipping$closest_coastal_state)
+CountYrCtry
+shipping$CountYrCtryVar2  <- table (shipping$year, shipping$closest_coastal_state)
+
 # try to remove missing values from incident_type, so far no success
 attacks <- shipping %>% filter(!is.na(incident_type) %>% droplevels()
 str(attacks)
