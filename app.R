@@ -18,10 +18,6 @@ Attacken$latitude <- gsub(",", ".", Attacken$latitude)
 Attacken$longitude <- as.numeric(Attacken$longitude)
 Attacken$latitude <- as.numeric(Attacken$latitude)
 
-Coordinates <- select(Attacken, 9 10) 
-Coordinates <- data.frame(matrix(unlist(Coordinates), nrow=646, byrow=T)) # Convert to dataframe
-Coordinates <- select(Coordinates, c(Longitude=X1, Latitude=X2, Height=X3)) # Rename
-
 ### Set color (for dots?)
 r_colors <- rgb(t(col2rgb(colors()) / 255))
 names(r_colors) <- colors()

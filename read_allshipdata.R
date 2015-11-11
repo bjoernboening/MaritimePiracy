@@ -2,6 +2,7 @@
   # Libraries we need for the project, make sure you have them installed
 library(rio)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 attach(shipping)
 
@@ -11,19 +12,14 @@ try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Ma
 getwd()
 
 #import data with the rio package the swiss army knife
-shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";")
+  # empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = TRUE, na.strings = c("", "NA"))
+  # have a look at how the variables are created
+str(shipping)
 
-#Creating a new variable for frequency count of attacks per country per year
-#data.frame ( table ( data$Group, data$Size ) )
-CountYrCtry <- table (shipping$year, shipping$closest_coastal_state)
-CountYrCtry
-shipping$CountYrCtryVar2  <- table (shipping$year, shipping$closest_coastal_state)
+# combine date into one column
+unite(shipping, "date", c("year", "month", "day"), sep = "-")
 
-# try to remove missing values from incident_type, so far no success
-
-attacks <- subset(shipping, incident_type = "")
-attacks <- shipping %>% filter(!is.na(incident_type) %>% droplevels()
-str(attacks)
 
 #attempting a probit regression 
 shipping$timeofdayrecode <- factor(shipping$timeofdayrecode)
