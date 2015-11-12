@@ -91,7 +91,7 @@ wdiData2$iso2c = NULL
 #Merging Data
 #######################################
 names(wdiData2)[1] <- 'closest_coastal_state'
-total <- merge(shipping,wdiData2,by=c("closest_coastal_state","year"))
+total2 <- merge(allmerge,wdiData2,by=c("closest_coastal_state","year"))
 
 
 #######################################
