@@ -1,9 +1,10 @@
-#########################################################
-#### Maritime Piracy Data Analysis ######################
-#########################################################
-#### by Laurence Hendry, Cody Koebnick, and Björn Boening
+##########################################################
+#### Maritime Piracy Data Analysis #######################
+##########################################################
+## by Laurence Hendry, Cody Koebnick, and Björn Boening ##
 
-# Import the dataset about piracy attacks into your wd 
+# Import the dataset about piracy attacks into your environment, ask Bjorn to send you the dataset
+  # Additional data will be made available dynamically from internet sources Worldbank and Wikipedia
   # Call libraries we need for the project, make sure you have them installed
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
@@ -21,14 +22,19 @@ getwd()
 
 #import data
   # empty cells are now coded with NA and can manually be excluded from any function with na.omit command
-shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = TRUE, na.strings = c("", "NA"))
+shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
   # have a look at how the variables are created
 str(shipping)
   # creae unique identifier country year
+#unite(shipping, "country.year", c("closest_coastal_state", "year"))
   # GET external source data
+# combine date into one column - doesnt work so far
+#unite(shipping, "date", c("year", "month", "day"), sep = "-")
 
-# combine date into one column
-unite(shipping, "date", c("year", "month", "day"), sep = "-")
+#data wrangling
+country <- group_by(shipping, closest_coastal_state)
+
+hotspots <- filter(shipping, )
 
 
 #######################################
@@ -51,9 +57,9 @@ summary (myprobit)
 
 
 #estimate model
-logit1 <- glm(notyemen ~ as.factor(shiptype) + as.factor(shipcategory), data = shipping, familiy = "binominal")
-lm(logit1)
+#logit1 <- glm(notyemen ~ as.factor(shiptype) + as.factor(shipcategory), data = shipping, familiy = "binominal")
+#lm(logit1)
 
-source()
+source() # runs the whole code
 ###############################
 ### End of script
