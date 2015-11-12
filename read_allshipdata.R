@@ -14,6 +14,8 @@ library(stargazer) # nicer regression output which looks like a real publication
 library(car) # scatterplots 
 library(httr) # scraping from http sites
 library(XML) # Tool for generating XML file
+library(WDI) # Scraping Data from the World Bank 
+library(countrycode)
 #attach(shipping)
 
 # set working directories 
@@ -69,12 +71,49 @@ names(CoastlineTable)[2] <- 'Coast/Area ratio (m/km2)'
 #p297 from R for Dummies
 allmerge <- merge(shipping, CoastlineTable, all.x=TRUE)
 
+
+######################################
+# Cody's Scraping Data
+######################################
+
+countries <- c("Indonesia", "Yemen", "Malaysia", "Bangladesh", "Nigeria", "India", "Somalia", "Philippines", "Vietnam", "Brazil")
+
+# Convert the country names to iso2c format used in the World Bank data
+iso2cNames <- countrycode(countries, "country.name", "iso2c")
+
+#actual scraping and creating a new dataset 
+wdiData2 <- WDI(iso2cNames, indicator='NY.GDP.PCAP.PP.CD', start=1994, end=2014)
+#Getting rid of the first columm.  
+wdiData2$iso2c = NULL
+
+#######################################
+#Merging Data
+#######################################
+names(wdiData2)[1] <- 'closest_coastal_state'
+total <- merge(shipping,wdiData2,by=c("closest_coastal_state","year"))
+
+
+
+
+###Grab GDP per capita data for our 10 key countries
+
 #######################################
 ## Descriptive Statistics
 #######################################
 # count countries = 108 total and 13 NAs
 count(shipping$closest_coastal_state)
 
+sort(table(shipping$closest_coastal_state), decreasing = TRUE)
+
+#Ploting the GDP per capita change overtime in our 10 countries.
+ggplot(wdiData2, aes(year, NY.GDP.PCAP.PP.CD, color=country)) + geom_line() + 
+  xlab('Year') + ylab('GDP per capita')
+
+####Creating a new variable for frequency count of attacks per country per year
+#data.frame ( table ( data$Group, data$Size ) )
+CountYrCtry <- table (shipping$year, shipping$closest_coastal_state)
+CountYrCtry
+shipping$CountYrCtryVar2  <- table (shipping$year, shipping$closest_coastal_state)
 
 #attempting a probit regression 
 shipping$timeofdayrecode <- factor(shipping$timeofdayrecode)
