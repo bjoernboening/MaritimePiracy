@@ -15,7 +15,7 @@ library(car) # scatterplots
 library(httr) # scraping from http sites
 library(XML) # Tool for generating XML file
 library(WDI) # Scraping Data from the World Bank 
-library(countrycode)
+library(countrycode) # provides world bank country codes 
 #attach(shipping)
 
 # set working directories 
