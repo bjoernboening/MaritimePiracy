@@ -49,7 +49,14 @@ iso2cNames <- countrycode(countries, "country.name", "iso2c")
 #actual scraping and creating a new dataset 
 wdiData2 <- WDI(iso2cNames, indicator='NY.GDP.PCAP.PP.CD', start=1994, end=2014)
 #attempt at getting rid of the first columm.  Doesn't work. 
-wdiData2$V1 = NULL
+wdiData2$iso2c = NULL
+
+#######################################
+#Merging Data
+#######################################
+names(wdiData2)[1] <- 'closest_coastal_state'
+total <- merge(shipping,wdiData2,by=c("closest_coastal_state","year"))
+
 
 #######################################
 ## Descriptive Statistics
