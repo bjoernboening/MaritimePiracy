@@ -9,9 +9,15 @@ output:
 ---
 # Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Maritime piracy has been in the media, especially with attention directed to the Horn of Africa. ATALANTA, the European Union's naval mission, patrolled along the coast of Somalia to combat maritime piracy and protect trading vessels against attacks. As it seems, fading media attention does not presuppose a reduced danger of maritime piracy globally.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected.
+
+# Research Question
+
+The idea for this paper is to research a model which can explain piracy attacks and also examine the development of piracy hotspots around the world over time. 
+
+What determines maritime piracy?
 
 ```{r}
 summary(cars)
