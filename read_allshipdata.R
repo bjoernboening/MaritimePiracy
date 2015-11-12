@@ -5,6 +5,7 @@
 
 # Import the dataset about piracy attacks into your wd 
   # Call libraries we need for the project, make sure you have them installed
+library(base)
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
 library(dplyr) # data wrangling
