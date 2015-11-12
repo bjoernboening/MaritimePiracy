@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 ##########################################################
 #### Maritime Piracy Data Analysis #######################
 ##########################################################
 ## by Laurence Hendry, Cody Koebnick, and Bjˆrn Boening ##
+=======
+#########################################################
+#### Maritime Piracy Data Analysis ######################
+#########################################################
+#### by Laurence Hendry, Cody Koebnick, and Bj√∂rn Boening
+>>>>>>> origin/master
 
 # Import the dataset about piracy attacks into your environment, ask Bjorn to send you the dataset
   # Additional data will be made available dynamically from internet sources Worldbank and Wikipedia
@@ -17,7 +24,7 @@ library(car) # scatterplots
 
 # set working directories 
 try(setwd("/Users/codykoebnick/Downloads/Data Set"))
-try(setwd("E:/bjoer/Documents/Google Drive/Universit‰t/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
+try(setwd("E:/bjoer/Documents/Google Drive/Universit√§t/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
 getwd()
 
 #import data
@@ -36,6 +43,38 @@ country <- group_by(shipping, closest_coastal_state)
 
 hotspots <- filter(shipping, )
 
+
+# add a variable on country coastline length web-scraped from wikipedia
+library(httr)
+library(dplyr)
+library(XML)
+
+URL <- 'https://en.wikipedia.org/wiki/List_of_countries_by_length_of_coastline'
+
+tables <- URL %>% GET() %>%
+  content(as = 'parsed') %>% 
+  readHTMLTable()
+
+names(tables)
+
+CoastlineTable <- tables[[1]]
+
+head(CoastlineTable)[, 1:3]
+
+CoastlineTable$V2 = NULL
+CoastlineTable$V3 = NULL
+CoastlineTable$V4 = NULL
+CoastlineTable$V5 = NULL
+CoastlineTable$V6 = NULL
+CoastlineTable$V8 = NULL
+
+colnames(CoastlineTable)
+names(CoastlineTable)
+names(CoastlineTable)[1] <- 'closest_coastal_state'
+names(CoastlineTable)[2] <- 'Coast/Area ratio (m/km2)'
+
+#p297 from R for Dummies
+allmerge <- merge(shipping, CoastlineTable, all.x=TRUE)
 
 #######################################
 ## Descriptive Statistics
