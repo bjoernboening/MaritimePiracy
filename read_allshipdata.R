@@ -75,7 +75,7 @@ allmerge <- merge(shipping, CoastlineTable, all.x=TRUE)
 ######################################
 # Cody's Scraping Data
 ######################################
-
+###Grab GDP per capita data for our 10 key countries
 countries <- c("Indonesia", "Yemen", "Malaysia", "Bangladesh", "Nigeria", "India", "Somalia", "Philippines", "Vietnam", "Brazil")
 
 # Convert the country names to iso2c format used in the World Bank data
@@ -92,10 +92,6 @@ wdiData2$iso2c = NULL
 names(wdiData2)[1] <- 'closest_coastal_state'
 total <- merge(shipping,wdiData2,by=c("closest_coastal_state","year"))
 
-
-
-
-###Grab GDP per capita data for our 10 key countries
 
 #######################################
 ## Descriptive Statistics
