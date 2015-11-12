@@ -5,10 +5,13 @@
 
 # Import the dataset about piracy attacks into your wd 
   # Call libraries we need for the project, make sure you have them installed
-library(rio)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+library(rio) # swiss army knife for imports
+library(plyr) # count occurences
+library(dplyr) # data wrangling
+library(tidyr) # data wrangling
+library(ggplot2) # nice plots
+library(stargazer) # nicer regression output which looks like a real publication
+library(car) # scatterplots 
 #attach(shipping)
 
 # set working directories 
@@ -31,6 +34,8 @@ unite(shipping, "date", c("year", "month", "day"), sep = "-")
 #######################################
 ## Descriptive Statistics
 #######################################
+# count countries = 108 total and 13 NAs
+count(shipping$closest_coastal_state)
 
 
 #attempting a probit regression 
