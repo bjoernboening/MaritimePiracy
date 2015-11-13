@@ -34,7 +34,7 @@ str(shipping)
   # creae unique identifier country year
   # GET external source data
 
-# combine date into one column
+# Fix or drop! combine date into one column - 
 unite(shipping, "date", c("year", "month", "day"), sep = "-")
 
 ######################################
@@ -139,39 +139,38 @@ total4$Suc_Rat2 <- total4$Atk_suc_count/total4$Freq
 #######################################
 #Cleaning the Master -LH
 #######################################
-total2$incident_type = NULL
-total2$day = NULL
-total2$month = NULL
-total2$timeofday = NULL
-total2$timeofdayrecode = NULL
-total2$incident_action = NULL
-total2$latitude = NULL
-total2$longitude = NULL
-total2$location_description = NULL
-total2$territorial_water_status = NULL
-total2$closest_state_cow_code = NULL
-total2$location_precision = NULL
-total2$geolocation_source = NULL
-total2$location_desription = NULL
-total2$vessel_name = NULL
-total2$vessel_country = NULL
-total2$Vessel_country_cow_code = NULL
-total2$vessel_status = NULL
-total2$Violence.Dummy = NULL
-total2$Steaming.Recode = NULL
-total2$Incident_action_recode = NULL
-total2$vessel_type = NULL
+total4$incident_type = NULL
+total4$day = NULL
+total4$month = NULL
+total4$timeofday = NULL
+total4$timeofdayrecode = NULL
+total4$incident_action = NULL
+total4$latitude = NULL
+total4$longitude = NULL
+total4$location_description = NULL
+total4$territorial_water_status = NULL
+total4$closest_state_cow_code = NULL
+total4$location_precision = NULL
+total4$geolocation_source = NULL
+total4$location_desription = NULL
+total4$vessel_name = NULL
+total4$vessel_country = NULL
+total4$Vessel_country_cow_code = NULL
+total4$vessel_status = NULL
+total4$Violence.Dummy = NULL
+total4$Steaming.Recode = NULL
+total4$Incident_action_recode = NULL
+total4$vessel_type = NULL
 
 
 #######################################
 ## Descriptive Statistics
 #######################################
-# count countries = 108 total and 13 NAs
-count(shipping$closest_coastal_state)
+# count countries = 9 total 
+count(total4$closest_coastal_state)
+sort(table(total4$closest_coastal_state), decreasing = TRUE)
 
-sort(table(shipping$closest_coastal_state), decreasing = TRUE)
-
-#Ploting the GDP per capita change overtime in our 10 countries.
+# Fix or Drop! Ploting the GDP per capita change overtime in our 10 countries.
 ggplot(wdiData2, aes(year, NY.GDP.PCAP.PP.CD, color=country)) + geom_line() + 
   xlab('Year') + ylab('GDP per capita')
 
