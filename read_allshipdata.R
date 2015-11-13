@@ -1,7 +1,7 @@
 #########################################################
 #### Maritime Piracy Data Analysis ######################
 #########################################################
-#### by Laurence Hendry, Cody Koebnick, and Björn Boening
+#### by Laurence Hendry, Cody Koebnick, and BjÃ¶rn Boening
 
 # Import the dataset about piracy attacks into your wd 
   # Call libraries we need for the project, make sure you have them installed
@@ -21,7 +21,7 @@ library(countrycode) # provides world bank country codes
 
 # set working directories 
 try(setwd("/Users/codykoebnick/Downloads/Data Set"))
-try(setwd("E:/bjoer/Documents/Google Drive/Universit�t/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
+try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
 getwd()
 try(setwd("//Users/laurencehendry/GoogleDrive/Master Thesis - Shared/MPP-E1180 - Introduction to Collaborative Social Science Data Analysis")) 
 getwd()
@@ -92,6 +92,32 @@ wdiData2$iso2c = NULL
 #######################################
 names(wdiData2)[1] <- 'closest_coastal_state'
 total2 <- merge(allmerge,wdiData2,by=c("closest_coastal_state","year"))
+
+#######################################
+#Cleaning the Master -LH
+#######################################
+total2$incident_type = NULL
+total2$day = NULL
+total2$month = NULL
+total2$timeofday = NULL
+total2$timeofdayrecode = NULL
+total2$incident_action = NULL
+total2$latitude = NULL
+total2$longitude = NULL
+total2$location_description = NULL
+total2$territorial_water_status = NULL
+total2$closest_state_cow_code = NULL
+total2$location_precision = NULL
+total2$geolocation_source = NULL
+total2$location_desription = NULL
+total2$vessel_name = NULL
+total2$vessel_country = NULL
+total2$Vessel_country_cow_code = NULL
+total2$vessel_status = NULL
+total2$Violence.Dummy = NULL
+total2$Steaming.Recode = NULL
+total2$Incident_action_recode = NULL
+total2$vessel_type = NULL
 
 
 #######################################
