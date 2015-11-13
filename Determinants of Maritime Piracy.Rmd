@@ -1,6 +1,6 @@
 ---
 title: "Determinants of Maritime Piracy"
-author: "Bjöern Boening, Cody Koebnick, Laurence Hendry"
+author: "Bj?ern Boening, Cody Koebnick, Laurence Hendry"
 date: "12. November 2015"
 output:
   html_document: default
@@ -13,14 +13,30 @@ Maritime piracy has been in the media, especially with attention directed to the
 
 Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected. Interestingly not all piracy attacks are successful, and the ratio varies from country to country and over time. So what drives piracy attacks, why and when are they successful?
 
+hhhh
+gi
 ```{r, echo=FALSE}
-try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
-shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
-table1 <- table(shipping$incident_type, shipping$year)
-addmargins(table1, margin = c(1,2), FUN = sum, quiet = TRUE)
-barplot(table1, main = "Share of successful and attemptet attacks from 1993 to 2014", xlab = "years", ylab = "frequency of attacks", legend.text = TRUE)
-```
 
+try(setwd("/Users/codykoebnick/Downloads/Data Set"))
+shipping <- read.csv("total4 naughty2.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+#renaming and dropping some of our columns 
+names(shipping)[1] <- 'country'
+names(shipping)[2] <- 'year'
+shipping$X1 = NULL
+names(shipping)[3] <- 'coast/Area ratio (m/km2)'
+names(shipping)[4] <- 'GDP per cap'
+names(shipping)[5] <- 'attacks/Year'
+names(shipping)[6] <- 'successful Attacks/Year'
+names(shipping)[7] <- 'success Ratio'
+
+#######################
+#Descriptive Statistics
+#######################
+
+#Histogram of attack frequnecy
+hist(shipping$`attacks/Year`)
+```
 
 # Research Question
 
