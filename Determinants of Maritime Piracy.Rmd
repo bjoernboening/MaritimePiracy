@@ -266,7 +266,7 @@ vif(ols2)
 outlierTest(ols2)
 ```
 
-# I Insights & Further Development
+# V Insights & Further Development
 
 * Attacks per year for the nation-states selected occurred mostly within the 0-20 range. 
 * Attacks in Bangladesh were statisticially far more likely to succeed than an attack on a shipping vessel in the Philippines, even accounting for 5% confidence intervals. This would suggest that Baglandeshi maritime patrols are inferior to those currently in place in the Philippines. 
