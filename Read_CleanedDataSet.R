@@ -118,4 +118,16 @@ fixed2 <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`GDP
 summary(fixed2)
 
 
+#####################
+# Regression Diagnostics
+######################
+
+#Assessing homoscedasticity (we have met the constant variance assumption if p < 1.95)
+ncvTest(ols2)
+
+#Assessing multicollinearity
+vif(ols2)
+
+#Assessing outliers
+outlierTest(ols2)
 
