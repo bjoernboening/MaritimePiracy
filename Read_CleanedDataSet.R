@@ -74,7 +74,7 @@ yhat <- ols$fitted
 plot(shipping$`attacks/Year`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
 abline(lm(shipping$`success Ratio`~shipping$`attacks/Year`),lwd=3, col="red")
 
-#attempting fixed effects model
+#attempting fixed effects model - attack success on attacks per year
 fixed <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping, index=c("country", "year"), model="within")
 summary(fixed)
 
@@ -85,21 +85,30 @@ summary(fixed)
 # OLS Regression
 # Regular OLS regression does not consider heterogeneity across groups or time.
 # In this simple model, the number of attacks has a slightly negative relationship with attack success, however it is not stat. sig. 
+# Model 2 - Success ratio on attacks/year + coast
 ols2 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`coast/Area ratio (m/km2)`, data=shipping)
 summary(ols2)
 
-yhat2 <- ols$fitted fitted
+yhat2 <- ols$fitted
 plot(shipping$`coast/Area ratio (m/km2)`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
-abline(lm(shipping$`success Ratio`~shipping$`attacks/Year`),lwd=3, col="red")
+abline(lm(shipping$`success Ratio`~shipping$`coast/Area ratio (m/km2)`),lwd=3, col="red")
 
-### trying to remove outlier philipines
-model2 <-update(ols2, subset=-shipping$country.Philippines)
+### Model 3 - Sucess rati on attacks/year + coast + GDP
+ols3 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`coast/Area ratio (m/km2)` + shipping$`GDP per cap`, data=shipping)
+summary(ols3)
+
+yhat3 <- ols$fitted 
+plot(shipping$`GDP per cap`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
+abline(lm(shipping$`success Ratio`~shipping$`GDP per cap`),lwd=3, col="red")
+
+#####################
+# Making a more complex FE model
+######################
+
+# FE model 2, Sucess Ratio on Attacks/Year + GDP per cap 
+#attempting fixed effects model
+fixed2 <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`GDP per cap`, data=shipping, index=c("country", "year"), model="within")
+summary(fixed2)
 
 
-ols2 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`coast/Area ratio (m/km2)`, data=shipping)
-summary(ols2)
-
-yhat2 <- ols$fitted fitted
-plot(shipping$`coast/Area ratio (m/km2)`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
-abline(lm(shipping$`success Ratio`~shipping$`attacks/Year`),lwd=3, col="red")
 
