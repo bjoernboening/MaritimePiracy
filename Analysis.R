@@ -22,7 +22,7 @@ library(plm)
 #attach(shipping)
 
 # set working directories 
-try(setwd("/Users/codykoebnick/Downloads/Data Set"))
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
 try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
 getwd()
 try(setwd("//Users/laurencehendry/GoogleDrive/Master Thesis - Shared/MPP-E1180 - Introduction to Collaborative Social Science Data Analysis")) 
