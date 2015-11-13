@@ -266,6 +266,15 @@ vif(ols2)
 outlierTest(ols2)
 ```
 
+# I Insights & Further Development
+
+* Attacks per year for the nation-states selected occurred mostly within the 0-20 range. 
+* Attacks in Bangladesh were statisticially far more likely to succeed than an attack on a shipping vessel in the Philippines, even accounting for 5% confidence intervals. This would suggest that Baglandeshi maritime patrols are inferior to those currently in place in the Philippines. 
+* Considering the progress of time for piracy attacks, indicated by our data is that attackers have not grown more successful. This is evidenced by the very large confidence intervals observable in the 'Heterogeneity across Years' table. 
+* There exists a small and negative linear coefficient for the amount of attacks per year correlated with success of these attacks, that may suggest that maritime patrol is improving in effectiviness over time. 
+* The Philippines occurs as a strong outlier when considering our 'Coast-Line Ratio' control for attacks per country (most likely given the archipelago geography). A further point for development of our model would be to remove the Philippines as a strong outlier when regressing coast-line ratio with success of an attack. 
+
+
 
 
 
