@@ -50,8 +50,10 @@ The annual reports were scraped with text analysis tools. Our team received a "r
 
 The original dataset contains the attacks that were reported by the victims of piracy. In our r 
 
-hhhh
-gi
+# Visualizing and examing the data
+
+Below is a histogram showing the frequency of attacks sorted by number of attacks per year.  In other words, we can clearly see that the vast majority of years had 1-20 attacks reported.  The frequency then goes gradually within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range, this is due to highly pirated coastal areas such as Bangladesh and the philippines. 
+
 ```{r, echo=FALSE}
 try()
 try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
@@ -75,25 +77,28 @@ names(shipping)[7] <- 'success Ratio'
 hist(shipping$`attacks/Year`)
 ```
 
+Similarily, the sucess of attacks is distributed in a very similar fashion to the number of attacks.  However, our study seeks to see if there is indeed a statistically significant relationship between the number of attacks and attack success.   
+
 ```{r, echo=FALSE}
 #Histogram of successful attacks per year
 hist(shipping$`successful Attacks/Year`)
 ```
+
+Below, a plot displays the relationship between attack success and the GDP per capita of the closest coastal state.  
 
 ```{r, echo=FALSE}
 #histogram of attack success over GDP per cap
 plot(shipping$`GDP per cap`, shipping$`success Ratio`)
 ```
 
+Here we have seperate coplots depicting the success ratio for attacks by year, sorted by the closest coastal state. 
+
 ```{r, echo=FALSE}
 #exploring the data 
 coplot(shipping$`success Ratio` ~ year|country, type="l", data=shipping) # Lines
-coplot(shipping$`success Ratio` ~ year|country, type="b", data=shipping) # Points and lines
 ```
 
-```{r, echo=FALSE}
-scatterplot(shipping$`success Ratio` ~year|country, boxplots=FALSE, smooth=TRUE, reg.line=FALSE, data=shipping)
-```
+When we examine the heterogeneity across countries it appears that a pirates change of a successful attack is dependent on the closest coastal state.  For instance, the changes of a successful attack in the Philippines is drastically lower than the odds of a successful attack in Bangladesh.  This also holds true when considering confidence intervals which are also depicted.  
 
 ```{r, echo=FALSE}
 # Fixed effects: Heterogeneity across countries (or entities)
@@ -102,11 +107,17 @@ scatterplot(shipping$`success Ratio` ~year|country, boxplots=FALSE, smooth=TRUE,
 plotmeans(shipping$`success Ratio` ~ country, main="Heterogeineity across countries", data=shipping)
 ```
 
+When we examine the heterogeneity across years the means seem to stay within the .65 - .85 range.  However, due to extremely large confidence intervals, time does not appear to be statistically significant.  
+
 ```{r, echo=FALSE}
 # Fixed effects: Heterogeneity across years
 # plotmeans draw a 95% confidence interval around the means
 plotmeans(shipping$`success Ratio` ~ year, main="Heterogeineity across years", data=shipping)
 ```
+
+Below is our first OLS regrssion.  Although OLS regrssion does not consider heterogeneity across groups or time, an OLS regrssion can still prove useful for gathering initial insight into the relationship of our variables.
+
+For instance, here we see that attacks per year does not a statistically significant effect with a p-value of >.1.  However, an interesting point worth noting would be that negative coefficient of attacks per year. 
 
 ```{r}
 # OLS Regression
@@ -115,7 +126,7 @@ plotmeans(shipping$`success Ratio` ~ year, main="Heterogeineity across years", d
 ols <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping)
 summary(ols)
 ```
-
+The below plot shows that after attacks in a certain country reach a threshold, approximately 40, their attack success ratio is steadily above .6.
 ```{r, echo=FALSE}
 # The below plot shows that after attacks in a certain country reach a threshold, approximately 40, their attack success ratio is steadily above .6
 yhat <- ols$fitted
@@ -123,13 +134,17 @@ plot(shipping$`attacks/Year`, shipping$`success Ratio`, pch=19, xlab="x1", ylab=
 abline(lm(shipping$`success Ratio`~shipping$`attacks/Year`),lwd=3, col="red")
 ```
 
-```{r}
+In our model's first fixed effects regression, attacks per year becomes statistically significant and has a small negative coefficient of -.002.  It is important to note that the attacks per year became significant only in the fixed effects model, as opposed to the OLS.
+
+```{r, echo=FALSE}
 #attempting fixed effects model - attack success on attacks per year
 fixed <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping, index=c("country", "year"), model="within")
 summary(fixed)
 ```
 
-```{r}
+However, once we add a variable controlling for the coast ratio of the closest coastal state, attacks per year once again becomes statistically insignificant.  
+
+```{r, echo=FALSE}
 # Increasing the complexity of our model
 ############################
 
@@ -139,13 +154,19 @@ summary(fixed)
 # Model 2 - Success ratio on attacks/year + coast
 ols2 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`coast/Area ratio (m/km2)`, data=shipping)
 summary(ols2)
+```
 
+Interestingly, the plot below shows that the coastal ratio of the closest coastal state most likely does have a positive, significant effect on attack success, however the Philippines is a strong outlier. 
+
+```{r, echo=FALSE}
 yhat2 <- ols$fitted
 plot(shipping$`coast/Area ratio (m/km2)`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
 abline(lm(shipping$`success Ratio`~shipping$`coast/Area ratio (m/km2)`),lwd=3, col="red")
 ```
 
-```{r}
+When we add GDP per capita
+
+```{r, echo=FALSE}
 ### Model 3 - Sucess rati on a
 # attacks/year + coast + GDP
 ols3 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`coast/Area ratio (m/km2)` + shipping$`GDP per cap`, data=shipping)
@@ -156,8 +177,7 @@ plot(shipping$`GDP per cap`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="
 abline(lm(shipping$`success Ratio`~shipping$`GDP per cap`),lwd=3, col="red")
 ```
 
-
-```{r}
+```{r, echo=FALSE}
 # FE model 2, Sucess Ratio on Attacks/Year + GDP per cap 
 #attempting fixed effects model
 fixed2 <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`GDP per cap`, data=shipping, index=c("country", "year"), model="within")
