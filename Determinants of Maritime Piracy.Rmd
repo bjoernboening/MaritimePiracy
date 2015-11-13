@@ -11,7 +11,16 @@ output:
 
 Maritime piracy has been in the media, especially with attention directed to the Horn of Africa. ATALANTA, the European Union's naval mission, patrolled along the coast of Somalia to combat maritime piracy and protect trading vessels against attacks. As it seems, fading media attention does not presuppose a reduced danger of maritime piracy globally.
 
-Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected.
+Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected. Interestingly not all piracy attacks are successful, and the ratio varies from country to country and over time. So what drives piracy attacks, why and when are they successful?
+
+```{r, echo=FALSE}
+try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
+shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+table1 <- table(shipping$incident_type, shipping$year)
+addmargins(table1, margin = c(1,2), FUN = sum, quiet = TRUE)
+barplot(table1, main = "Share of successful and attemptet attacks from 1993 to 2014", xlab = "years", ylab = "frequency of attacks", legend.text = TRUE)
+```
+
 
 # Research Question
 
@@ -19,6 +28,9 @@ The idea for this paper is to research a model which can explain piracy attacks 
 
 What determines maritime piracy?
 
+# Data gathering
+
+We 
 ```{r}
 summary(cars)
 ```
