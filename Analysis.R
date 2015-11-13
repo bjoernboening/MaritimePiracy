@@ -30,14 +30,13 @@ getwd()
 
 #import data
 # empty cells are now coded with NA and can manually be excluded from any function with na.omit command
-shipping <- read.csv("total4 naughty2.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+shipping <- read.csv("shipping.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 # have a look at how the variables are created
 str(shipping)
 
 #renaming and dropping some of our columns 
 names(shipping)[1] <- 'country'
 names(shipping)[2] <- 'year'
-shipping$X1 = NULL
 names(shipping)[3] <- 'coast/Area ratio (m/km2)'
 names(shipping)[4] <- 'GDP per cap'
 names(shipping)[5] <- 'attacks/Year'
