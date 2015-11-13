@@ -19,6 +19,7 @@ library(WDI) # Scraping Data from the World Bank
 library(countrycode) # provides world bank country codes 
 library(gplots)
 library(plm)
+library(knitr)
 #attach(shipping)
 
 # set working directories 
@@ -47,6 +48,7 @@ names(shipping)[7] <- 'success Ratio'
 #######################
 #Descriptive Statistics
 #######################
+# barplot for frequency of attacks by country
 
 #Histogram of attack frequnecy
 hist(shipping$`attacks/Year`)

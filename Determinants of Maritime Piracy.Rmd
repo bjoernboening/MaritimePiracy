@@ -22,6 +22,21 @@ library(WDI) # Scraping Data from the World Bank
 library(countrycode) # provides world bank country codes 
 library(gplots)
 library(plm)
+library(knitr)
+
+try()
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+#renaming and dropping some of our columns 
+names(shipping)[1] <- 'country'
+names(shipping)[2] <- 'year'
+shipping$X1 = NULL
+names(shipping)[3] <- 'coast/Area ratio (m/km2)'
+names(shipping)[4] <- 'GDP per cap'
+names(shipping)[5] <- 'attacks/Year'
+names(shipping)[6] <- 'successful Attacks/Year'
+names(shipping)[7] <- 'success Ratio'
 ```
 
 
@@ -58,26 +73,32 @@ The original dataset contains the attacks that were reported by the victims of p
 
 Of critical interest to us were the respective 'Coast/Area' ratios (measured in km of coast length to km of square land) that serves as an insightful control for our country dependent variable. 
 
-The information about the gross domestic pr
+The information about the gross domestic product comes from the worldbank and was scraped with the WDI package for R. The scraped data comes in a country-year format, thus it was already in a format we need to conduct our analysis.
+
+# Cleaning
+
+Firstly, we reduced the key dataset on piracy attacks to the 8 countries with the highest number of attacks. The remaining countries are:
+
+1. Bangladesh
+2. Brazil
+3. India
+4. Indonesia
+5. Malaysia
+6. Nigeria
+7. Philippines
+8. Vietnam 
+
+Secondly, the all data needed to be merged. After the additionally gathered data was clean, we merged into the original dataset on piracy the variables for GDP and the coastline ratio. The initial plan was to reshape this dataset into panel data. However, as you will see in our R-code the reshape was not fully succsessful. We did not get rid of all first-level variables, or in other words we were unable to aggregate to the desired country_year level. We deleted all irrelevant variables, renamed the remaining ones with more intuitive names.
+
+In the next section we explain, why we decided to continue with a new dataset produced with excel.
+
 
 # Visualizing and examing the data
 
 Below is a histogram showing the frequency of attacks sorted by number of attacks per year.  In other words, we can clearly see that the vast majority of years had 1-20 attacks reported.  The frequency then goes gradually within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range, this is due to highly pirated coastal areas such as Bangladesh and the philippines. 
 
 ```{r, echo=FALSE}
-try()
-try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
-shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
-#renaming and dropping some of our columns 
-names(shipping)[1] <- 'country'
-names(shipping)[2] <- 'year'
-shipping$X1 = NULL
-names(shipping)[3] <- 'coast/Area ratio (m/km2)'
-names(shipping)[4] <- 'GDP per cap'
-names(shipping)[5] <- 'attacks/Year'
-names(shipping)[6] <- 'successful Attacks/Year'
-names(shipping)[7] <- 'success Ratio'
 
 #######################
 #Descriptive Statistics
