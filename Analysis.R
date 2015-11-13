@@ -37,6 +37,7 @@ str(shipping)
 #renaming and dropping some of our columns 
 names(shipping)[1] <- 'country'
 names(shipping)[2] <- 'year'
+shipping$X1 = NULL
 names(shipping)[3] <- 'coast/Area ratio (m/km2)'
 names(shipping)[4] <- 'GDP per cap'
 names(shipping)[5] <- 'attacks/Year'
