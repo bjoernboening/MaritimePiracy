@@ -67,6 +67,7 @@ A major challenge in the preparation of our data was the change of our units of 
 After several attempts to remove duplicates and particular values in the transformation process we determined to save our intermediate progress. We then proceeded to open and transform the dataset using Microsoft Excel, using the find and replace function supported in this suite. This excursion with another suite was intentionally limited to just these two steps, with data preparation continuing in Analysis.R. 
 
 The offending code:
+
 **Step 1: Attempt to drop rows conditional given particular values using R**
 ```{r}
 SuccRatCtryYr <- table (shipping$year, shipping$closest_coastal_state, shipping$Incident_type_recode==1)
