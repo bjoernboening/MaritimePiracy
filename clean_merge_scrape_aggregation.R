@@ -37,11 +37,12 @@ str(shipping)
 # Fix or drop! combine date into one column - 
 unite(shipping, "date", c("year", "month", "day"), sep = "-")
 
+
 ######################################
-# Laurence's data scraping - add a variable on country coastline length web-scraped from wikipedia
+# Add a variable on country coastline length web-scraped from wikipedia -LH
 #####################################
 
-# scraping 
+# Scraping from Wikipedia
 URL <- 'https://en.wikipedia.org/wiki/List_of_countries_by_length_of_coastline'
 
 tables <- URL %>% GET() %>%
@@ -74,8 +75,9 @@ allmerge <- merge(shipping, CoastlineTable, all.x=TRUE)
 
 
 ######################################
-# Cody's Scraping Data
+# Scraping Data from World Bank -CK
 ######################################
+
 ###Grab GDP per capita data for our 10 key countries
 countries <- c("Indonesia", "Yemen", "Malaysia", "Bangladesh", "Nigeria", "India", "Somalia", "Philippines", "Vietnam", "Brazil")
 
@@ -111,6 +113,7 @@ names(CountYrCtryVar3)[2] <- 'closest_coastal_state'
 #merging our new variable into the dataset.  
 total3 <- merge(total2,CountYrCtryVar3,by=c("closest_coastal_state","year"))
 
+
 ##########################################
 #222Creating a new variable for the success ratio of attacks in a given year per country
 ##########################################
@@ -129,12 +132,12 @@ names(SuccRatCtryYr2)[2] <- 'closest_coastal_state'
 names(SuccRatCtryYr2)[3] <- 'Incident_type_recode'
 names(SuccRatCtryYr2)[4] <- 'Atk_suc_count'
 
-
 #merging our new variable into the dataset.  
 total4 <- merge(total3,SuccRatCtryYr2,by=c("closest_coastal_state","year", "Incident_type_recode"))
 
 #Creating a new variable 
 total4$Suc_Rat2 <- total4$Atk_suc_count/total4$Freq
+
 
 #######################################
 #Cleaning the Master -LH
@@ -161,7 +164,6 @@ total4$Violence.Dummy = NULL
 total4$Steaming.Recode = NULL
 total4$Incident_action_recode = NULL
 total4$vessel_type = NULL
-
 
 #######################################
 ## Descriptive Statistics
@@ -191,11 +193,11 @@ xtabs(~ timeofdayrecode + Incident_type_recode, data=shipping)
 myprobit <- glm(Incident_type_recode ~ timeofdayrecode + vessel_type + vessel_status, family=binomial(link="probit"), data=shipping)
 summary (myprobit)
 
-
 #estimate model
 logit1 <- glm(notyemen ~ as.factor(shiptype) + as.factor(shipcategory), data = shipping, familiy = "binominal")
 lm(logit1)
 
 source()
+
 ###############################
 ### End of script
