@@ -93,6 +93,25 @@ wdiData2$iso2c = NULL
 names(wdiData2)[1] <- 'closest_coastal_state'
 total2 <- merge(allmerge,wdiData2,by=c("closest_coastal_state","year"))
 
+
+########################################
+#Creating a new variable for frequency count of attacks per country per year -CK
+#########################################
+#data.frame ( table ( data$Group, data$Size ) )
+CountYrCtry <- table (shipping$year, shipping$closest_coastal_state)
+CountYrCtry
+#Checking our newly created table.   It is indeed a table.  We need a variable.
+class(CountYrCtry)
+#coverts our table into a variable 
+CountYrCtryVar3 = as.data.frame(CountYrCtry)
+class(CountYrCtryVar3)
+#preparing to merge, renaming new variable's columns  
+names(CountYrCtryVar3)[1] <- 'year'
+names(CountYrCtryVar3)[2] <- 'closest_coastal_state'
+#merging our new variable into the dataset.  
+total3 <- merge(total2,CountYrCtryVar3,by=c("closest_coastal_state","year"))
+
+
 #######################################
 #Cleaning the Master -LH
 #######################################
