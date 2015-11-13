@@ -7,12 +7,7 @@ output:
   pdf_document:
     number_section: true
 ---
-
-# Introduction
-
 ```{r, echo=FALSE, message=FALSE}
-
-# package calls
 library(base)
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
@@ -27,25 +22,10 @@ library(WDI) # Scraping Data from the World Bank
 library(countrycode) # provides world bank country codes 
 library(gplots)
 library(plm)
-
-# set current wd
-try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"))
-try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
-# improt final data
-shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
-
-#renaming and dropping some of our columns 
-names(shipping)[1] <- 'country'
-names(shipping)[2] <- 'year'
-shipping$X1 = NULL
-names(shipping)[3] <- 'coast/Area ratio (m/km2)'
-names(shipping)[4] <- 'GDP per cap'
-names(shipping)[5] <- 'attacks/Year'
-names(shipping)[6] <- 'successful Attacks/Year'
-names(shipping)[7] <- 'success Ratio'
-
 ```
 
+
+# Introduction
 
 Maritime piracy has been in the media, especially with attention directed to the Horn of Africa. ATALANTA, the European Union's naval mission, patrolled along the coast of Somalia to combat maritime piracy and protect trading vessels against attacks. As it seems, fading media attention does not presuppose a reduced danger of maritime piracy globally.
 
@@ -57,7 +37,14 @@ The idea for this paper is to research a model which can explain piracy under wh
 
 Does the number of attacks decrease the likelihood of attacks being successful?
 
-We expect that several variables can 
+The dependent variable is the success rate of piracy attacks, calculated by the number of successful attacks divided by the total number of attacks. We expect that mainly the total number of attacks has an impact on this ratio. The fact that the dependent variable actually consists of our key independent variable is dangerous. However, we think that there must be a visible learning effect, either from law enforcement bodies, the shipping crew, or the pirates. So far this was the only feasible way we could have a look at this effect. 
+
+Furthermore, additional exogenous variables will be included that in theory should have an impact on the inspected success rate. GDP (per capita per year) as a mirror for the economic incentives to conduct piracy is expected to influence the success rate over time. Likewise, a country's ratio of coast line to its land area should be a good demarker, whether piracy attacks happen more often. 
+
+1. After a certain amount of piracy attacks, the success rate has a peek and will decrease.
+2. The higher the GDP, the less incentive there is to conduct an attack and only less skilled pirates will make attempts, hence the success rate decreases.
+3. The higher the coast-land ratio is, the more people decide to conduct attacks and skilled pirates emerge, hence the success rate increases.
+
 
 # Data 
 
@@ -76,7 +63,19 @@ Of critical interest to us were the respective 'Coast/Area' ratios (measured in 
 Below is a histogram showing the frequency of attacks sorted by number of attacks per year.  In other words, we can clearly see that the vast majority of years had 1-20 attacks reported.  The frequency then goes gradually within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range, this is due to highly pirated coastal areas such as Bangladesh and the philippines. 
 
 ```{r, echo=FALSE}
+try()
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
+#renaming and dropping some of our columns 
+names(shipping)[1] <- 'country'
+names(shipping)[2] <- 'year'
+shipping$X1 = NULL
+names(shipping)[3] <- 'coast/Area ratio (m/km2)'
+names(shipping)[4] <- 'GDP per cap'
+names(shipping)[5] <- 'attacks/Year'
+names(shipping)[6] <- 'successful Attacks/Year'
+names(shipping)[7] <- 'success Ratio'
 
 #######################
 #Descriptive Statistics
