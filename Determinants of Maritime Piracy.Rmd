@@ -36,8 +36,8 @@ hhhh
 gi
 ```{r, echo=FALSE}
 try()
-try(setwd("/Users/codykoebnick/Downloads/Data Set"))
-shipping <- read.csv("total4 naughty2.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
 #renaming and dropping some of our columns 
 names(shipping)[1] <- 'country'
