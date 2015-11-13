@@ -134,9 +134,7 @@ names(SuccRatCtryYr2)[4] <- 'Atk_suc_count'
 total4 <- merge(total3,SuccRatCtryYr2,by=c("closest_coastal_state","year", "Incident_type_recode"))
 
 #Creating a new variable 
-total4$Suc_Rat <- total4$freq/total4$Atk_suc_count
-total4$Suc_Rat <- (total4$freq+total4$Atk_suc_count)
-total4$Suc_Rat <- (total4$freq / total4$Atk_suc_count)
+total4$Suc_Rat2 <- total4$Atk_suc_count/total4$Freq
 
 #######################################
 #Cleaning the Master -LH
