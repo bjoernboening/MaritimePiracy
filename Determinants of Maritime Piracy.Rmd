@@ -172,25 +172,32 @@ plot(shipping$`coast/Area ratio (m/km2)`, shipping$`success Ratio`, pch=19, xlab
 abline(lm(shipping$`success Ratio`~shipping$`coast/Area ratio (m/km2)`),lwd=3, col="red")
 ```
 
-When we add GDP per capita
+When we add GDP per capita nothing is significant. 
 
 ```{r, echo=FALSE}
 ### Model 3 - Sucess rati on a
 # attacks/year + coast + GDP
 ols3 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`coast/Area ratio (m/km2)` + shipping$`GDP per cap`, data=shipping)
 summary(ols3)
+```
 
+A graph of the above regression
+
+```{r, echo=FALSE}
 yhat3 <- ols$fitted 
 plot(shipping$`GDP per cap`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
 abline(lm(shipping$`success Ratio`~shipping$`GDP per cap`),lwd=3, col="red")
 ```
 
+Number of attacks is significant again.
 ```{r, echo=FALSE}
 # FE model 2, Sucess Ratio on Attacks/Year + GDP per cap 
 #attempting fixed effects model
 fixed2 <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year` + shipping$`GDP per cap`, data=shipping, index=c("country", "year"), model="within")
 summary(fixed2)
 ```
+
+Here are diagnostic regressions
 
 ```{r}
 #####################
