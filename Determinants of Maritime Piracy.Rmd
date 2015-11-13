@@ -13,10 +13,29 @@ Maritime piracy has been in the media, especially with attention directed to the
 
 Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected. Interestingly not all piracy attacks are successful, and the ratio varies from country to country and over time. So what drives piracy attacks, why and when are they successful?
 
+# Research Design
+
+The idea for this paper is to research a model which can explain piracy under which circumstances attacks are successful. 
+
+Does the number of attacks decrease the likelihood of attacks being successful?
+
+We expect that several variables can 
+
+# Data 
+
+The International Maritime Bureau (IMB) collects since 1992 all reported piracy attack globally. Since then it publishes annually an overview of all attacks that happened in a year. These annual reports provided by the IMB contain detailed information about every incident, which allows for further analysis of distinct types of piracy attacks, for instance successful attacks v. attempted attacks.
+
+The annual reports were scraped with text analysis tools. Our team received a "ready to use" dataset from a research project from the university of Tennessee, including all global piracy attacks from 1994 to 2014.
+
+
+# Additional data gathering
+
+The original dataset contains the attacks that were reported by the victims of piracy. In our r 
+
 hhhh
 gi
 ```{r, echo=FALSE}
-
+try()
 try(setwd("/Users/codykoebnick/Downloads/Data Set"))
 shipping <- read.csv("total4 naughty2.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
@@ -38,11 +57,7 @@ names(shipping)[7] <- 'success Ratio'
 hist(shipping$`attacks/Year`)
 ```
 
-# Research Question
 
-The idea for this paper is to research a model which can explain piracy attacks and also examine the development of piracy hotspots around the world over time. 
-
-What determines maritime piracy?
 
 # Data gathering
 
