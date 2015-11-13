@@ -48,6 +48,13 @@ names(shipping)[7] <- 'success Ratio'
 #Descriptive Statistics
 #######################
 
+#Histogram of attack frequnecy
+hist(shipping$`attacks/Year`)
+#Histogram of successful attacks per year
+hist(shipping$`successful Attacks/Year`)
+#histogram of attack success over GDP per cap
+plot(shipping$`GDP per cap`, shipping$`success Ratio`)
+
 #exploring the data 
 coplot(shipping$`success Ratio` ~ year|country, type="l", data=shipping) # Lines
 coplot(shipping$`success Ratio` ~ year|country, type="b", data=shipping) # Points and lines
