@@ -48,15 +48,13 @@ Furthermore, additional exogenous variables will be included that in theory shou
 
 # III Preparation of Dataset
 
-## Principal Gathering: 
+### Principal Gathering
 
-The International Maritime Bureau (IMB) collects since 1992 all reported piracy attack globally. Since then it publishes annually an overview of all attacks that happened in a year. These annual reports provided by the IMB contain detailed information about every incident, which allows for further analysis of distinct types of piracy attacks, for instance successful attacks v. attempted attacks.
+Since 1992, the International Maritime Bureau (IMB) has collected all reported piracy attack globally. Since then it publishes annually an overview of all attacks that happened in a year. These annual reports provided by the IMB contain detailed information about every incident, which allows for further analysis of distinct types of piracy attacks, for instance successful attacks v. attempted attacks.
 
 The annual reports were scraped with text analysis tools. Our team received a "ready to use" dataset from a research project from the university of Tennessee, including all global piracy attacks from 1994 to 2014.
 
-## Additional Data Gathering: World Bank and Wikipedia
-
-World Bank...
+### Additional Data Gathering: World Bank and Wikipedia
 
 The original dataset contains the attacks that were reported by the victims of piracy. As an additional variable, relevant to our field of piracy investigation and patrols, we were intrigued by the relative effect that a longer coast length of a country has on the level of attacks that country suffers. To address this question we  parsed a table titled "List of countries by length of coastline" from a Wikipedia page that had, in turn, used information from the CIA World Factbook. We then merged this coastline data with our existing dataframe using a 'right outer join'. 
 
