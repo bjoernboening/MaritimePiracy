@@ -87,9 +87,9 @@ wdiData2 <- WDI(iso2cNames, indicator='NY.GDP.PCAP.PP.CD', start=1994, end=2014)
 #Getting rid of the first columm.  
 wdiData2$iso2c = NULL
 
-#######################################
+######
 #Merging Data
-#######################################
+######
 names(wdiData2)[1] <- 'closest_coastal_state'
 total2 <- merge(allmerge,wdiData2,by=c("closest_coastal_state","year"))
 
@@ -111,6 +111,32 @@ names(CountYrCtryVar3)[2] <- 'closest_coastal_state'
 #merging our new variable into the dataset.  
 total3 <- merge(total2,CountYrCtryVar3,by=c("closest_coastal_state","year"))
 
+##########################################
+#222Creating a new variable for the success ratio of attacks in a given year per country
+##########################################
+#data.frame ( table ( data$Group, data$Size ) )
+SuccRatCtryYr <- table (shipping$year, shipping$closest_coastal_state, shipping$Incident_type_recode)
+SuccRatCtryYr
+class(SuccRatCtryYr)
+
+#coverts our table into a variable 
+SuccRatCtryYr2 = as.data.frame(SuccRatCtryYr)
+class(SuccRatCtryYr2)
+
+#preparing to merge, renaming new variable's columns  
+names(SuccRatCtryYr2)[1] <- 'year'
+names(SuccRatCtryYr2)[2] <- 'closest_coastal_state'
+names(SuccRatCtryYr2)[3] <- 'Incident_type_recode'
+names(SuccRatCtryYr2)[4] <- 'Atk_suc_count'
+
+
+#merging our new variable into the dataset.  
+total4 <- merge(total3,SuccRatCtryYr2,by=c("closest_coastal_state","year", "Incident_type_recode"))
+
+#Creating a new variable 
+total4$Suc_Rat <- total4$freq/total4$Atk_suc_count
+total4$Suc_Rat <- (total4$freq+total4$Atk_suc_count)
+total4$Suc_Rat <- (total4$freq / total4$Atk_suc_count)
 
 #######################################
 #Cleaning the Master -LH
