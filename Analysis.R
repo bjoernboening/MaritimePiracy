@@ -30,7 +30,7 @@ getwd()
 
 #import data
 # empty cells are now coded with NA and can manually be excluded from any function with na.omit command
-shipping <- read.csv("shipping.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 # have a look at how the variables are created
 str(shipping)
 
