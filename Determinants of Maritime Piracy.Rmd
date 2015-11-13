@@ -7,7 +7,12 @@ output:
   pdf_document:
     number_section: true
 ---
-```{r, echo=FALSE}
+
+# Introduction
+
+```{r, echo=FALSE, message=FALSE}
+
+# package calls
 library(base)
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
@@ -22,10 +27,25 @@ library(WDI) # Scraping Data from the World Bank
 library(countrycode) # provides world bank country codes 
 library(gplots)
 library(plm)
+
+# set current wd
+try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"))
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
+# improt final data
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+#renaming and dropping some of our columns 
+names(shipping)[1] <- 'country'
+names(shipping)[2] <- 'year'
+shipping$X1 = NULL
+names(shipping)[3] <- 'coast/Area ratio (m/km2)'
+names(shipping)[4] <- 'GDP per cap'
+names(shipping)[5] <- 'attacks/Year'
+names(shipping)[6] <- 'successful Attacks/Year'
+names(shipping)[7] <- 'success Ratio'
+
 ```
 
-
-# Introduction
 
 Maritime piracy has been in the media, especially with attention directed to the Horn of Africa. ATALANTA, the European Union's naval mission, patrolled along the coast of Somalia to combat maritime piracy and protect trading vessels against attacks. As it seems, fading media attention does not presuppose a reduced danger of maritime piracy globally.
 
@@ -53,19 +73,7 @@ The original dataset contains the attacks that were reported by the victims of p
 hhhh
 gi
 ```{r, echo=FALSE}
-try()
-try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
-shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
-#renaming and dropping some of our columns 
-names(shipping)[1] <- 'country'
-names(shipping)[2] <- 'year'
-shipping$X1 = NULL
-names(shipping)[3] <- 'coast/Area ratio (m/km2)'
-names(shipping)[4] <- 'GDP per cap'
-names(shipping)[5] <- 'attacks/Year'
-names(shipping)[6] <- 'successful Attacks/Year'
-names(shipping)[7] <- 'success Ratio'
 
 #######################
 #Descriptive Statistics
