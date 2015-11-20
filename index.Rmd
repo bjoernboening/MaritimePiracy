@@ -1,11 +1,11 @@
 ---
 title: "Determinants of Maritime Piracy"
-author: "Björn Boening, Cody Koebnick, Laurence Hendry"
+author: "BjÃ¶rn Boening, Cody Koebnick, Laurence Hendry"
 date: "12. November 2015"
 output:
   html_document: default
   pdf_document:
-    number_section: true
+    number_section: yes
 ---
 ```{r, echo=FALSE, message=FALSE}
 library(base)
