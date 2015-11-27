@@ -20,10 +20,9 @@ library(countrycode) # provides world bank country codes
 #attach(shipping)
 
 # set working directories 
-try(setwd("/Users/codykoebnick/Downloads/Data Set"))
-try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
-getwd()
-try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy")) 
+try(setwd("/Users/codykoebnick/Downloads/Data Set"),silent=TRUE)
+try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"),silent=TRUE)
+try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
 getwd()
 
 #import data
