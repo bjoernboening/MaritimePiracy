@@ -12,7 +12,7 @@ library(rgdal)
 library(gsubfn)
 
 ### Prepare Coordinates
-Attacken <- read.csv("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee/MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE)
+Attacken <- read.csv("E:/bjoer/Documents/GitHub/MaritimePiracy/MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE)
 # sorry! ask for the dataset if you are curios.
 Attacken$longitude <- gsub(",", ".", Attacken$longitude)
 Attacken$latitude <- gsub(",", ".", Attacken$latitude)
