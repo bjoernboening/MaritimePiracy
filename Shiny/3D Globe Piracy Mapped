@@ -56,14 +56,18 @@ names(CoastlineTable)[2] <- 'CoastRatio'
 
 #merging
 #p297 from R for Dummies
-allmerge <- merge(shipping, CoastlineTable, all.x=TRUE)
+shipping <- merge(shipping, CoastlineTable, all.x=TRUE)
 
 
 ######################################
 # Create a Globe Viewer  -LH
 #####################################
+
+shipping$longitude <- gsub(",", ".", shipping$longitude)
+shipping$latitude <- gsub(",", ".", shipping$latitude)
+
 data(wrld_simpl, package="maptools")
-data(world.cities, package="maps")
+data(worldMapEnv, package="maps")
 
 bgcolor <- "#000025"
 earth <- tempfile(fileext=".jpg")
@@ -72,7 +76,7 @@ par(mar = c(0,0,0,0), pin = c(4,2), pty = "m", xaxs = "i",
     xaxt = "n", xpd = FALSE, yaxs = "i", yaxt = "n")
 
 col <- rep("black",length(wrld_simpl$NAME))    # Set a default country color
-col[wrld_simpl$NAME=="Indonesia"] <- "#003344"    # Highlight Brazil
+col[wrld_simpl$NAME=="Somalia"] <- "#FF0000"    # Highlight Brazil
 
 
 plot(wrld_simpl, col=col,          bg=bgcolor, border="#111111", ann=FALSE,  axes=FALSE, 
@@ -80,9 +84,7 @@ plot(wrld_simpl, col=col,          bg=bgcolor, border="#111111", ann=FALSE,  axe
 
 graphics.off()
 
-globejs(img=earth, bg="black", lat=allmerge$latitude,     long=allmerge$Violence.Dummy, value=allmerge$Violence.Dummy, 
-        rotationlat=-0.34,     rotationlong=-0.38, fov=30)
+globejs(img=earth, bg="black", lat=shipping$latitude, long=shipping$longitude, value=shipping$CoastRatio, color=col, pointsize=0.5, rotationlat=-0.34,     rotationlong=-0.38, fov=30, atmosphere=TRUE)
 
 #alternatively could use the 'CoastRatio' variable here for values for arcs
 
-allmerge$longitude <- gsub(",", ".", allmerge$longitude)
