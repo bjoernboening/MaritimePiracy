@@ -18,7 +18,7 @@ library(stargazer) # nicer regression output which looks like a real publication
 library(car) # scatterplots 
 library(httr) # scraping from http sites
 library(XML) # Tool for generating XML file
-library(WDI) # Scraping Data from the World Bank 
+library(WDI) # Scraping Data from the World Bank
 library(countrycode) # provides world bank country codes 
 library(gplots)
 library(plm)
