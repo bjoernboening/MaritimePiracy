@@ -133,3 +133,42 @@ vif(ols2)
 #Assessing outliers
 outlierTest(ols2)
 
+############
+#manually loaded the UCDP.Prio dataset for conflicts
+###########
+
+names(ucdp.prio)[3] <- 'country'
+names(ucdp.prio)[1] <- 'year'
+
+ucdp.prio$ConflictId <- NULL
+ucdp.prio$SideA <- NULL
+ucdp.prio$SideA2nd <- NULL
+ucdp.prio$SideB <- NULL
+ucdp.prio$SideBID <- NULL
+ucdp.prio$SideB2nd <- NULL
+ucdp.prio$Incompatibility <- NULL
+ucdp.prio$TerritoryName <- NULL
+ucdp.prio$CumulativeIntensity <- NULL
+ucdp.prio$TypeOfConflict <- NULL
+ucdp.prio$StartDate <- NULL
+ucdp.prio$StartPrec <- NULL
+ucdp.prio$StartDate2 <- NULL
+ucdp.prio$StartPrec2 <- NULL
+ucdp.prio$EpEnd <- NULL
+ucdp.prio$EpEndDate <- NULL
+ucdp.prio$EpEndPrec <- NULL
+ucdp.prio$GWNoA <- NULL
+ucdp.prio$GWNoA2nd <- NULL
+ucdp.prio$GWNoB <- NULL
+ucdp.prio$GWNoB2nd <- NULL
+ucdp.prio$GWNoLoc <- NULL
+ucdp.prio$Region <- NULL
+ucdp.prio$Version <- NULL
+
+MergedData <- merge 
+merged.data <- merge(shipping, ucdp.prio, by=c("country", "year"))
+mydata <- merge(shipping, ucdp.prio, by=c("country","year"), all.x=TRUE) 
+
+deduped.data <- unique( mydata[ , 1:8 ] )
+deduped.data2 <- unique( mydata[ , 1:7 ] )
+
