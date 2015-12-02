@@ -36,15 +36,21 @@ micro <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", strin
 # have a look at how the variables are created
 str(micro)
 
+#subsetting variables
+sub <- micro[c(4, 6, 12, 18, 24, 23)]
 #renaming and dropping some of our columns 
-names(micro)[1] <- 'country'
-names(micro)[2] <- 'year'
-micro$X1 = NULL
-names(micro)[3] <- 'coast/Area ratio (m/km2)'
-names(micro)[4] <- 'GDP per cap'
-names(micro)[5] <- 'attacks/Year'
-names(micro)[6] <- 'successful Attacks/Year'
-names(micro)[7] <- 'success Ratio'
+names(sub)[1] <- 'year'
+names(sub)[3] <- 'state'
+names(sub)[2] <- 'time'
+
+names(sub)[4] <- 'type'
+names(sub)[5] <- 'incident'
+names(sub)[6] <- 'status'
+#micro$X1 = NULL
+# Delete missing values
+
+table(sub$year, useNA = "always")
+table(micro$Time , useNA = "always")
 
 #######################
 #Descriptive Statistics
