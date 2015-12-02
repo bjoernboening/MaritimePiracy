@@ -5,8 +5,7 @@
 #### Micro Level
 
 # We decided to determine what drives maritime piracy on different levels.
-# 
-# Import the dataset about piracy attacks into your environment 
+
 # Call libraries we need for the project, make sure you have them installed
 library(base)
 library(rio) # swiss army knife for imports
@@ -24,38 +23,50 @@ library(gplots)
 library(plm)
 library(knitr)
 
+
+######
+#IMPORT & DATA WRANGLING
+######
 # set working directories 
 try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
 try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"))
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy")) 
 getwd()
-
 #import data
-# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+# empty cells are coded with NA and can manually be excluded from any function with na.omit command
 micro <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 # have a look at how the variables are created
 str(micro)
-
-#subsetting variables
+#subsetting (keep) variables
 sub <- micro[c(4, 6, 12, 18, 24, 23)]
-#renaming and dropping some of our columns 
+#renaming and dropping missing values 
 names(sub)[1] <- 'year'
-names(sub)[3] <- 'state'
 names(sub)[2] <- 'time'
-
+names(sub)[3] <- 'state'
 names(sub)[4] <- 'type'
 names(sub)[5] <- 'incident'
 names(sub)[6] <- 'status'
 #micro$X1 = NULL
 # Delete missing values
-
 table(sub$year, useNA = "always")
-table(micro$Time , useNA = "always")
+table(sub$time, useNA = "always")
+sub$time[sub$time==-99] <- NA
+table(sub$status, useNA = "always")
+sub$status[sub$status==-99] <- NA
+table(sub$type, useNA = "always")
+sub$type[sub$type==-99] <- NA
+sub$type[sub$type==22] <- NA
+sub$type[sub$type==696] <- NA
+table(sub$incident, useNA = "always")
+sub$incident[sub$incident==-99] <- NA
+table(sub$state, useNA = "always")
 
-#######################
-#Descriptive Statistics
-#######################
+######
+#DESCRIPTIVE STATS
+######
 # barplot for frequency of attacks by country
+suc_ratio <- ggplot(sub)
+suc_ratio + aes(factor(incident)) + geom_bar()
 
 #Histogram of attack frequnecy
 hist(micro$`attacks/Year`)
