@@ -3,9 +3,10 @@ title: "Determinants of Maritime Piracy"
 author: "Björn Boening, Cody Koebnick, Laurence Hendry"
 date: "12. November 2015"
 output:
-  html_document: default
+  word_document: default
   pdf_document:
-    number_section: true
+    number_section: yes
+  html_document: default
 ---
 ```{r, echo=FALSE, message=FALSE}
 library(base)
@@ -121,6 +122,23 @@ newtotal4 <- total4[duplicated(total4)=='FALSE', ]
 Below is a histogram showing the frequency of attacks sorted by number of attacks per year.  In other words, we can clearly see that the vast majority of years had 1-20 attacks reported.  The frequency then goes gradually within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range, this is due to highly pirated coastal areas such as Bangladesh and the philippines. 
 
 ```{r, echo=FALSE}
+<<<<<<< Updated upstream
+=======
+try()
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
+try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy")) 
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+#renaming and dropping some of our columns 
+names(shipping)[1] <- 'country'
+names(shipping)[2] <- 'year'
+shipping$X1 = NULL
+names(shipping)[3] <- 'coast/Area ratio (m/km2)'
+names(shipping)[4] <- 'GDP per cap'
+names(shipping)[5] <- 'attacks/Year'
+names(shipping)[6] <- 'successful Attacks/Year'
+names(shipping)[7] <- 'success Ratio'
+>>>>>>> Stashed changes
 
 #######################
 #Descriptive Statistics

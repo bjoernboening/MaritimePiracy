@@ -1,0 +1,90 @@
+### Refine dataset and model 3D Globe with it 
+
+library(base)
+library(rio) # swiss army knife for imports
+library(plyr) # count occurences
+library(dplyr) # data wrangling
+library(tidyr) # data wrangling
+library(ggplot2) # nice plots
+library(stargazer) # nicer regression output which looks like a real publication
+library(car) # scatterplots 
+library(httr) # scraping from http sites
+library(XML) # Tool for generating XML file
+library(WDI) # Scraping Data from the World Bank 
+library(countrycode) # provides world bank country codes 
+library(threejs)
+library(maptools)
+library(maps)
+
+#value  <- 100 * cities$pop / max(cities$pop)
+try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
+getwd()
+
+#import data
+# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+shipping <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+######################################
+# Add a variable on country coastline length web-scraped from wikipedia -LH
+#####################################
+
+URL <- 'https://en.wikipedia.org/wiki/List_of_countries_by_length_of_coastline'
+
+tables <- URL %>% GET() %>%
+  content(as = 'parsed') %>% 
+  readHTMLTable()
+
+names(tables)
+
+CoastlineTable <- tables[[1]]
+
+head(CoastlineTable)[, 1:3]
+
+#cleaning the scrape for merge
+CoastlineTable$V2 = NULL
+CoastlineTable$V3 = NULL
+CoastlineTable$V4 = NULL
+CoastlineTable$V5 = NULL
+CoastlineTable$V6 = NULL
+CoastlineTable$V8 = NULL
+
+#renaming, part of scrape
+colnames(CoastlineTable)
+names(CoastlineTable)
+names(CoastlineTable)[1] <- 'closest_coastal_state'
+names(CoastlineTable)[2] <- 'CoastRatio'
+
+#merging
+#p297 from R for Dummies
+shipping <- merge(shipping, CoastlineTable, all.x=TRUE)
+
+
+######################################
+# Create a Globe Viewer  -LH
+#####################################
+
+shipping$longitude <- gsub(",", ".", shipping$longitude)
+shipping$latitude <- gsub(",", ".", shipping$latitude)
+
+data(wrld_simpl, package="maptools")
+data(worldMapEnv, package="maps")
+
+bgcolor <- "#000025"
+earth <- tempfile(fileext=".jpg")
+jpeg(earth, width=2048, height=1024, quality=100, bg=bgcolor, antialias="default")
+par(mar = c(0,0,0,0), pin = c(4,2), pty = "m", xaxs = "i",
+    xaxt = "n", xpd = FALSE, yaxs = "i", yaxt = "n")
+
+col <- rep("black",length(wrld_simpl$NAME))    # Set a default country color
+col[wrld_simpl$NAME=="Somalia"] <- "#FF0000"    # Highlight Brazil
+
+
+plot(wrld_simpl, col=col,          bg=bgcolor, border="#111111", ann=FALSE,  axes=FALSE, 
+     xpd=FALSE,  xlim=c(-180,180), ylim=c(-90,90),  setParUsrBB=TRUE)
+
+graphics.off()
+
+globejs(img=earth, bg="black", lat=shipping$latitude, long=shipping$longitude, value=shipping$CoastRatio, color=col, pointsize=0.5, rotationlat=-0.34,     rotationlong=-0.38, fov=30, atmosphere=TRUE)
+
+#alternatively could use the 'CoastRatio' variable here for values for arcs
+
