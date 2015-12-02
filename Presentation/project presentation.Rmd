@@ -45,6 +45,22 @@ names(shipping)[6] <- 'successful Attacks/Year'
 names(shipping)[7] <- 'success Ratio'
 ```
 
+## Contents
+- Introduction
++ A 21st Century Problem: Maritime Piracy
++ Our Data
+- Bjoern
++ Model
++ Analysis
++ Results
+- Laurence
++ 3D Globe
++ 3D Region: Southeast Asia
++ 3D Region: Arabian Sea
+- Cody
++ Model 
++ Analysis
++ Results
 
 ## Visualizing and Examining the Data
 
