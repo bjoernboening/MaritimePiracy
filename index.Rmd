@@ -8,6 +8,7 @@ output:
     number_section: yes
 ---
 ```{r, echo=FALSE, message=FALSE}
+#helpful shortcuts for editing what is includeded in Knitr: http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html
 library(base)
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
