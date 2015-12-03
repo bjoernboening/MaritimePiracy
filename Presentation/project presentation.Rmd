@@ -215,7 +215,7 @@ plotmeans(shipping$`success Ratio` ~ country, main="Average Success Ratio of Pir
 
 plotmeans(shipping$`success Ratio` ~ year, main="Average Success Ratio of Pirates per Year", data=shipping, xlab="Year", ylab="Success Ratio")
 ```
-## Adding variables:  Military Expenditure and Military Conflicts
+## Adding Variables:  Military Expenditure and Military Conflicts
 
 ```{r, echo=FALSE}
 #import data
@@ -314,6 +314,7 @@ plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`)
 plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`)
 ```
 
+## Regressin Results 
 ```{r, echo=FALSE}
 ###############
 ## Inferential Statistics
