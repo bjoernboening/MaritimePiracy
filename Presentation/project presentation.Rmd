@@ -308,7 +308,7 @@ remove(list=c("Military"))
 remove(list=c("x2"))
 remove(list=c("ship.ucdp"))
 
-#histogram of attack success over GDP per cap
+#histograms to display on slide
 plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`)
 
 plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`)
@@ -318,7 +318,7 @@ plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`)
 ###############
 ## Inferential Statistics
 ###############
-
+### I would like these two regressions to display
 ols10 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`coast/Area ratio (m/km2)` + ship.ucdp.mil$`GDP per cap` + ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil)
 summary(ols10)
 
