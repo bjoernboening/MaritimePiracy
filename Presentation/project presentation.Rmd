@@ -47,20 +47,20 @@ names(shipping)[7] <- 'success Ratio'
 
 ## Contents
 - Introduction & Contents
-    +A 21st Century Problem: Maritime Piracy
-    +Our Data
+    + A 21st Century Problem: Maritime Piracy
+    + Our Data
 - Bjoern
-    +Model
-    +Analysis
-    +Results
+    + Model
+    + Analysis
+    + Results
 - Laurence
-    +3D Globe
-    +3D Region: Southeast Asia
-    +3D Region: Arabian Sea
+    + 3D Globe
+    + 3D Region: Southeast Asia
+    + 3D Region: Arabian Sea
 - Cody
-    +Model 
-    +Analysis
-    +Results
+    + Model 
+    + Analysis
+    + Results
 
 ## Visualizing and Examining the Data
 
