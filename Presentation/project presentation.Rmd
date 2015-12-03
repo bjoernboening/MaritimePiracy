@@ -314,7 +314,7 @@ plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`)
 plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`)
 ```
 
-## Regressin Results 
+## Regression Results 
 ```{r, echo=FALSE}
 ###############
 ## Inferential Statistics
