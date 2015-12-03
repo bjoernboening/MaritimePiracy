@@ -46,7 +46,7 @@ names(shipping)[7] <- 'success Ratio'
 ```
 
 ## Contents
-- Introduction
+- Introduction & Contents
 + A 21st Century Problem: Maritime Piracy
 + Our Data
 - Bjoern
