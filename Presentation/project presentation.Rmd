@@ -64,7 +64,7 @@ names(shipping)[7] <- 'success Ratio'
 
 ## Visualizing and Examining the Data
 
-3D Globes using the 'threejs' Package: The [threejs package](http://bwlewis.github.io/rthreejs/). The 3D globes are full navigable, with pinch-zooming enabled for trackpads to help with examining statistical results in particular regions. 
+3D Globes using the 'threejs' Package: The [3D Globe package](file:///Users/laurencehendry/GoogleDrive/Master%20Thesis%20-%20Shared/MPP-E1180%20-%20Introduction%20to%20Collaborative%20Social%20Science%20Data%20Analysis/Laurence-Github/Working%203D%20Globe/Model%20v1.html). The 3D globes are full navigable, with pinch-zooming enabled for trackpads to help with examining statistical results in particular regions. 
 
 ```{r, echo=FALSE}
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
