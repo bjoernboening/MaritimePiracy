@@ -1,10 +1,11 @@
 #########################################################
 #### Maritime Piracy Data Analysis ######################
 #########################################################
-#### by Laurence Hendry, Cody Koebnick, and BjÃ¶rn Boening
+#### by Laurence Hendry, Cody Koebnick, and Bjoern Boening
 #### Micro Level
 
 # We decided to determine what drives maritime piracy on different levels.
+# This script analyses on a micro level, one row one piracy attack
 
 # Call libraries we need for the project, make sure you have them installed
 library(base)
@@ -22,6 +23,7 @@ library(countrycode) # provides world bank country codes
 library(gplots)
 library(plm)
 library(knitr)
+library(Hmisc) # variable labels
 
 
 ######
@@ -39,14 +41,37 @@ micro <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", strin
 str(micro)
 #subsetting (keep) variables
 sub <- micro[c(4, 6, 12, 18, 24, 23)]
-#renaming and dropping missing values 
+
+#renaming and recoding
 names(sub)[1] <- 'year'
+
 names(sub)[2] <- 'time'
+sub$time <- factor(sub$time,
+                    levels = c(1,2,3,4))
+
 names(sub)[3] <- 'state'
+
 names(sub)[4] <- 'type'
+sub$type[sub$type==1] <- 222
+sub$type[sub$type==5] <- 222
+sub$type[sub$type==9] <- 222
+sub$type[sub$type==2] <- 111
+sub$type[sub$type==3] <- 111
+sub$type[sub$type==4] <- 111
+sub$type[sub$type==6] <- 111
+sub$type[sub$type==7] <- 111
+sub$type[sub$type==8] <- 111
+sub$type[sub$type==111] <- 1
+sub$type[sub$type==222] <- 2
+
 names(sub)[5] <- 'incident'
-names(sub)[6] <- 'status'
-#micro$X1 = NULL
+
+names(sub)[6] <- 'stat'
+sub$stat <- factor(sub$stat,
+                    levels = c(1,2,3,4))
+sub$status <- recode(sub$stat, "c(1)='1'; c(2,3,4)='2'") # what a bastard this line was arrgg
+sub$stat = NULL
+
 # Delete missing values
 table(sub$year, useNA = "always")
 table(sub$time, useNA = "always")
@@ -57,25 +82,76 @@ table(sub$type, useNA = "always")
 sub$type[sub$type==-99] <- NA
 sub$type[sub$type==22] <- NA
 sub$type[sub$type==696] <- NA
+sub$type[sub$type==10] <- NA
 table(sub$incident, useNA = "always")
 sub$incident[sub$incident==-99] <- NA
 table(sub$state, useNA = "always")
+# Omit NAs # not working must create a new data frame
+sub$time <- na.omit(sub$time)
+sub$status <- na.omit(sub$status)
+sub$type <- na.omit(sub$type)
+sub$incident <- na.omit(sub$incident)
 
 ######
 #DESCRIPTIVE STATS
 ######
 # barplot for frequency of attacks by country
-suc_ratio <- ggplot(na.omit(sub))
-suc_ratio + aes(factor(incident)) + geom_bar()
-suc_ratio + labs(title = "Success Ratio of Piracy Attacks")
-suc_ratio + ylabs("Total Frequency from 1993 to 2014")
-suc_ratio + xlab("0=attempted 1=actual")
+#suc_ratio <- ggplot(na.omit(sub)
+#suc_ratio + aes(factor(incident)) + geom_bar()
+#suc_ratio <- geom_bar()
+#suc_ratio + labs(title = "Success Ratio of Piracy Attacks")
+#suc_ratio + ylabs("Total Frequency from 1993 to 2014")
+#suc_ratio + xlab("0=attempted 1=actual")
+#chi <- table(sub$incident, sub$type)
+#prop.table(na.omit(sub)$type)
+#chisq.test(na.omit(sub)$type)
+#data <- structure(list(W= c(399L, 82L, 29L), 
+ #                      X = c(370L, 100L, 25L)), 
+  #                .Names = c("Female", "Male"), class = "data.frame", row.names = c(NA, -3L))
+#attach(data)
+#print(data)
 
+#barplot(as.matrix(data), ylim=c(0,400), main="Workshop reach by sex 2014", ylab = "Numbers of Workshops", cex.lab = 1.2, cex.main = 1.4, beside=TRUE)
+#legend("topright", c("One workshop", "Two workshops", "Three workshops"), cex=0.7, bty="n", fill=colours)
 
-#Histogram of attack frequnecy
-hist(micro$`attacks/Year`)
+#Histogram of ship type
+hist(sub$type, xlab = "ship types", main = paste("Histogram of type"))
 #Histogram of successful attacks per year
-hist(micro$`successful Attacks/Year`)
+hist(sub$time)
+######
+#TABLES
+######
+#table row percentages of type (numeric)
+tab <- table(na.omit(sub)$incident,na.omit(sub)$type) # A will be rows, B will be columns 
+tab # print table 
+margin.table(tab, 1) # A frequencies (summed over B) 
+margin.table(tab, 2) # B frequencies (summed over A)
+prop.table(tab) # cell percentages
+prop.table(tab, 1) # row percentages !
+prop.table(tab, 2) # column percentages
+#table of status (factor)
+tab1 <- table(na.omit(sub)$incident,na.omit(sub)$status) # A will be rows, B will be columns 
+tab1 # print table 
+margin.table(tab1, 1) # A frequencies (summed over B) 
+margin.table(tab1, 2) # B frequencies (summed over A)
+prop.table(tab1) # cell percentages
+prop.table(tab1, 1) # row percentages !
+prop.table(tab1, 2) # column percentages
+#table of time (factor)
+tab2 <- table(na.omit(sub)$incident,na.omit(sub)$time) # A will be rows, B will be columns 
+tab2 # print table 
+margin.table(tab2, 1) # A frequencies (summed over B) 
+margin.table(tab2, 2) # B frequencies (summed over A)
+prop.table(tab2) # cell percentages
+prop.table(tab2, 1) # row percentages !
+prop.table(tab2, 2) # column percentages
+
+
+# 3-Way Frequency Table
+tab2 <- xtabs(~incident+type, data=sub)
+ftable(tab2) # print table 
+summary(tab2) # chi-square test of indepedence
+
 #histogram of attack success over GDP per cap
 plot(micro$`GDP per cap`, micro$`success Ratio`)
 
