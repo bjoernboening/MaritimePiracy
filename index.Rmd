@@ -123,7 +123,6 @@ class(SuccRatCtryYr)
 duplicated(total4)
 newtotal4 <- total4[duplicated(total4)=='FALSE', ]
 
-
 # IV Visualizing and Examining the Data
 ```{r, echo=FALSE}
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
@@ -167,6 +166,10 @@ data(wrld_simpl, package="maptools")
 data(worldMapEnv, package="maps")
 ```
 
+### 3D Globes using the 'threejs' Package
+
+Many thanks to Bryan W. Lewis and his website for the creation and help in using the [threejs package](http://bwlewis.github.io/rthreejs/). The 3D globes are full navigable, with pinch-zooming enabled for trackpads to help with examining statistical results in particular regions. 
+
 ## Global Overview: Piracy and Maritime Defence Propensity 
 ```{r, echo=FALSE}
 ######################################
@@ -190,8 +193,21 @@ graphics.off()
 
 globejs(img=earth, bg="black", lat=globe$latitude, long=globe$longitude, value=globe$CoastRatio, color=col, pointsize=0.5, rotationlat=0.2,     rotationlong=-3, fov=30, atmosphere=TRUE)
 ```
+Nb. Country borders highlighted green; Philippines highlighted red; Arc length indicates height of coast-to-country ratio (small to large)
 
-## Regional Focus: Piracy in the South China Sea
+This globe provides insight on the issue of piracy 'on the high seas', by investigating whether a country's coastal length has an effect on the number and location of pirate attacks we can observe. The assumption here is that if a country has a higher coastal to country ratio (an island-state, for instance) then it should be less likely that that country is affected by maritime piracy, since there is a greater incentive to defend itself and maritime defence is therefore prioritised and greater in that country. 
+
+H1: Most pirate attacks occur in areas where countries have smaller country-to-coast ratios, and thus are less incentivised to defend against maritime pirate  attacks. 
+H0: Whether a country has a greater country-to-coast ratio has either an inverse or no effect on where pirate attacks occur. 
+
+To observe this we have coded the arc length (shown in white) of the individual attacks that occur to show height of coastline-to-country ratios. If there is a tall arc, then the country has a proportionately higher coastal size. The expectation is therefore that fewer tall arcs should appear since these countries are actively patrolling and bordering their vulnerable coastlines. 
+
+This is not always the case, depending on region. Our H1 remains true for the area around the Gulf of Aden and particularly in the Arabian Sea, where countries with less incentive to defend maritime areas do indeed suffer from higher attack frequency. Oman, Pakistan, India, Somalia, Kenya and Tanzania are prime examples of this pattern.
+
+However, the results change when shifting focus to the South China Sea. Despite Indonesia and the Philippines (highlighted) having very long coastal lengths, a lot of attacks can be observed. This confirms our H0 null hypothesis, with contrary results occuring for Southeast Asian States. 
+
+
+### Regional Focus: Piracy in the South China Sea
 ```{r, echo=FALSE}
 ######################################
 # Create a Globe Viewer 2: Using 'Steaming.Recode' for arcs; SEAsia region focus; Indonesia highlighted -LH
@@ -213,8 +229,15 @@ graphics.off()
 
 globejs(img=earth, bg="black", lat=globe$latitude, long=globe$longitude, value=globe$Steaming.Recode, color=col, pointsize=0.6, rotationlat=0.2, rotationlong=-3.5, fov=18, atmosphere=TRUE)
 ```
+Nb. Country borders highlighted green; Indonesia highlighted red; Arc length indicates vessel status (moving to stationary)
 
-## Regional Focus: Piracy in the Gulf of Aden and Arabian Sea
+H1: Stationary ships are more likely to be attacked than moving ships in Southeast Asia.
+H0: Stationary ships are no less, or less likely, to be attacked than moving ships in Southeast Asia.
+
+In this globe we take a regional focus for Southeast Asia. We can observe that whether a ship was moving (dot) or stationary (arc) appears to make little difference to the number of relative pirate attacks. This could be potentially due to the archipelago maritime geography; with many ports concentrated in a small area pirates may have similar accessibility to pirating trade both for anchored ships as well as for ships underway.
+
+
+### Regional Focus: Piracy in the Gulf of Aden & Arabian Sea
 ```{r, echo=FALSE}
 ######################################
 # Create a Globe Viewer 3: Using 'Steaming.Recode' for arcs; Africa region focus; Somalia highlighted -LH
@@ -236,10 +259,12 @@ graphics.off()
 
 globejs(img=earth, bg="black", lat=globe$latitude, long=globe$longitude, value=globe$Steaming.Recode, color=col, pointsize=0.6, rotationlat=0.1, rotationlong=-2.5, fov=15, atmosphere=TRUE)
 ```
+Nb. Country borders highlighted green; Somalia highlighted red; Arc length indicates vessel status (stationary to moving)
 
-Below is a histogram showing the frequency of attacks sorted by number of attacks per year.  In other words, we can clearly see that the vast majority of years had 1-20 attacks reported.  The frequency then goes gradually within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range, this is due to highly pirated coastal areas such as Bangladesh and the philippines. 
+H1: Stationary ships are more likely to be attacked than moving ships in the Arabian Sea.
+H0: Stationary ships are no less, or less likely, to be attacked than moving ships in the Arabian Sea. 
 
-```{r, echo=FALSE}
+In this globe we take a regional focus for the Arabian Sea that includes the Gulf of Aden. We can observe that whether a ship was moving (dot) or stationary (arc) appears to make a large difference to the number of relative pirate attacks. Ships that were underway were more likely to be attacked. This is likely due to how large oceangoing ship traffic often transits through the Arabian Sea, but does not anchor. Pirates are therefore forced to conduct mobile pirate raids. 
 
 #######################
 #Descriptive Statistics
