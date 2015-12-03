@@ -65,8 +65,12 @@ table(sub$state, useNA = "always")
 #DESCRIPTIVE STATS
 ######
 # barplot for frequency of attacks by country
-suc_ratio <- ggplot(sub)
+suc_ratio <- ggplot(na.omit(sub))
 suc_ratio + aes(factor(incident)) + geom_bar()
+suc_ratio + labs(title = "Success Ratio of Piracy Attacks")
+suc_ratio + ylabs("Total Frequency from 1993 to 2014")
+suc_ratio + xlab("0=attempted 1=actual")
+
 
 #Histogram of attack frequnecy
 hist(micro$`attacks/Year`)
