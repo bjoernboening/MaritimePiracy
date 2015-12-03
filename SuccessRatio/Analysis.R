@@ -20,7 +20,7 @@ library(countrycode) # provides world bank country codes
 library(gplots)
 library(plm)
 library(knitr)
-#attach(shipping)
+
 
 # set working directories 
 try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
@@ -72,20 +72,21 @@ plotmeans(shipping$`success Ratio` ~ country, main="Heterogeineity across countr
 # plotmeans draw a 95% confidence interval around the means
 plotmeans(shipping$`success Ratio` ~ year, main="Heterogeineity across years", data=shipping)
 
+
 # OLS Regression
 # Regular OLS regression does not consider heterogeneity across groups or time.
 # In this simple model, the number of attacks has a slightly negative relationship with attack success, however it is not stat. sig. 
-ols <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping)
-summary(ols)
+ols1 <-lm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping)
+summary(ols1)
 
 # The below plot shows that after attacks in a certain country reach a threshold, approximately 40, their attack success ratio is steadily above .6
-yhat <- ols$fitted
+yhat1 <- ols$fitted
 plot(shipping$`attacks/Year`, shipping$`success Ratio`, pch=19, xlab="x1", ylab="y")
 abline(lm(shipping$`success Ratio`~shipping$`attacks/Year`),lwd=3, col="red")
 
 #attempting fixed effects model - attack success on attacks per year
-fixed <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping, index=c("country", "year"), model="within")
-summary(fixed)
+fixed1 <- plm(shipping$`success Ratio` ~ shipping$`attacks/Year`, data=shipping, index=c("country", "year"), model="within")
+summary(fixed1)
 
 ############################
 # Increasing the complexity of our model
@@ -133,12 +134,13 @@ vif(ols2)
 #Assessing outliers
 outlierTest(ols2)
 
-############
-#manually loaded the UCDP.Prio dataset for conflicts
-###########
+#import data
+# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+ucdp.prio <- read.csv("124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+# have a look at how the variables are created
 
 names(ucdp.prio)[3] <- 'country'
-names(ucdp.prio)[1] <- 'year'
+names(ucdp.prio)[2] <- 'year'
 
 ucdp.prio$ConflictId <- NULL
 ucdp.prio$SideA <- NULL
@@ -164,11 +166,137 @@ ucdp.prio$GWNoB2nd <- NULL
 ucdp.prio$GWNoLoc <- NULL
 ucdp.prio$Region <- NULL
 ucdp.prio$Version <- NULL
+str(shipping)
 
-MergedData <- merge 
-merged.data <- merge(shipping, ucdp.prio, by=c("country", "year"))
-mydata <- merge(shipping, ucdp.prio, by=c("country","year"), all.x=TRUE) 
+ucdp.prio <- ddply(ucdp.prio, .(country, year), numcolwise(sum))
 
-deduped.data <- unique( mydata[ , 1:8 ] )
-deduped.data2 <- unique( mydata[ , 1:7 ] )
+ship.ucdp <- merge(shipping, ucdp.prio, by=c("country","year"), all.x=TRUE) 
+remove(list=c("shipping"))
+remove(list=c("ucdp.prio"))
+
+ship.ucdp <- unique(ship.ucdp[ , 1:8 ] )
+
+ship.ucdp$IntensityLevel[is.na(ship.ucdp$IntensityLevel)] <- 0 
+
+#Histogram of conflict frequnecy in our countries
+hist(ship.ucdp$IntensityLevel)
+
+#histogram of success ratio over intensity level 
+plot(ship.ucdp$IntensityLevel, ship.ucdp$`success Ratio`)
+
+scatterplot(ship.ucdp$`IntensityLevel` ~ year|country, boxplots=FALSE, smooth=TRUE, reg.line=FALSE, data=ship.ucdp)
+
+#######################
+#adding military expenditure numbers
+######################
+#import data
+# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+Military <- read.csv("Military.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+# have a look at how the variables are created
+
+names(Military)[1] <- 'country'
+names(Military)[2] <- '1992'
+names(Military)[3] <- '1993'
+names(Military)[4] <- '1994'
+names(Military)[5] <- '1995'
+names(Military)[6] <- '1996'
+names(Military)[7] <- '1997'
+names(Military)[8] <- '1998'
+names(Military)[9] <- '1999'
+names(Military)[10] <- '2000'
+names(Military)[11] <- '2001'
+names(Military)[12] <- '2002'
+names(Military)[13] <- '2003'
+names(Military)[14] <- '2004'
+names(Military)[15] <- '2005'
+names(Military)[16] <- '2006'
+names(Military)[17] <- '2007'
+names(Military)[18] <- '2008'
+names(Military)[19] <- '2009'
+names(Military)[20] <- '2010'
+names(Military)[21] <- '2011'
+names(Military)[22] <- '2012'
+names(Military)[23] <- '2013'
+names(Military)[24] <- '2014'
+
+
+library(reshape)
+x2 <- melt(Military,id=c("country"),variable_name="Year")
+x2[,"Year"] <- as.numeric(gsub("X","",x2[,"Year"]))
+
+names(x2)[2] <- 'year'
+names(x2)[3] <- 'Military Expenditure'
+
+ship.ucdp.mil <- merge(ship.ucdp, x2, by=c("country","year"), all.x=TRUE) 
+remove(list=c("Military"))
+remove(list=c("x2"))
+remove(list=c("ship.ucdp"))
+
+
+#Descriptive Statistics
+#######################
+# barplot for frequency of attacks by country
+
+#histogram of attack success over GDP per cap
+plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`)
+plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`success Ratio`)
+plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`)
+
+plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`success Ratio`)
+plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`attacks/Year`)
+
+###############
+## Inferential Statistics
+###############
+
+ols10 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`coast/Area ratio (m/km2)` + ship.ucdp.mil$`GDP per cap` + ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil)
+summary(ols10)
+
+ols11 <-lm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$`coast/Area ratio (m/km2)` + ship.ucdp.mil$`GDP per cap` + ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil)
+summary(ols11)
+
+ols4 <-lm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$`attacks/Year`, data=ship.ucdp.mil)
+summary(ols4)
+
+ols5 <-lm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$IntensityLevel, data=ship.ucdp.mil)
+summary(ols5)
+
+ols6 <- lm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$`Military Expenditure`, data = ship.ucdp.mil, na.action = na.omit)
+summary(ols6)
+
+#this shows that military expenditure does not have a sig relationship with the success of an attack, but conflict intensity does. 
+ols7 <- lm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$IntensityLevel, data = ship.ucdp.mil, na.action = na.omit)
+summary(ols7)
+
+#this shows that military expenditure does have a sig reelationship with NUMBER of attacks, as does intensity levels. 
+ols8 <- lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$IntensityLevel, data = ship.ucdp.mil, na.action = na.omit)
+summary(ols8)
+
+# The below plot shows that after attacks in a certain country reach a threshold, approximately 40, their attack success ratio is steadily above .6
+plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`, pch=19, xlab="Military Expenditure", ylab="Attacks per Year")
+
+fixed3 <- plm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$IntensityLevel, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed3)
+
+fixed4 <- plm(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$IntensityLevel + ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed4)
+
+fixed5 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$IntensityLevel, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed5)
+
+fixed6 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$IntensityLevel + ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed6)
+
+
+plotmeans(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$IntensityLevel, main="Heterogeineity across years", data=ship.ucdp.mil)
+plotmeans(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$IntensityLevel, main="Heterogeineity across years", data=ship.ucdp.mil)
+
+plotmeans(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure`, main="Heterogeineity across years", data=ship.ucdp.mil)
+plotmeans(ship.ucdp.mil$`success Ratio` ~ ship.ucdp.mil$`Military Expenditure`, main="Heterogeineity across years", data=ship.ucdp.mil)
+
+
+fixed8 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`GDP per cap` + ship.ucdp.mil$country, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed8)
+
+
 
