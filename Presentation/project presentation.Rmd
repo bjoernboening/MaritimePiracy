@@ -3,10 +3,9 @@ title: "Determinants of Maritime Piracy"
 author: "Bjoern Boening, Laurence Hendry & Cody Koebnick"
 date: "4 December 2015"
 output:
-  ioslides_presentation: default
   slidy_presentation:
-    font_adjustment: -1.5
-biglogo: Pirate-Flag.png
+    font_adjustment: -1.2
+  ioslides_presentation: default
 ---
 
 ```{r, echo=FALSE, message=FALSE}
@@ -315,9 +314,9 @@ remove(list=c("x2"))
 remove(list=c("ship.ucdp"))
 
 #histograms to display on slide
-plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`, main="Showing the Correlation between Intensity Level and Military Expenditure", data=ship.ucdp.mil, xlab="Military Expenditure", ylab="Intensity Level")
+plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`, xlab="Intensity Level", ylab="Military Expenditure")
 
-plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`, main="Visualizing Military Expenditure's affect on Attacks per year ", data=ship.ucdp.mil, xlab="Military Expenditure", ylab="Attacks Per Year"))
+plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`, xlab="Military Expenditure", ylab="Attacks Per Year")
 ```
 
 ## Regression Results 
