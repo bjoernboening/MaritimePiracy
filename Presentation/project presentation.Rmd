@@ -1,15 +1,16 @@
 ---
-title: "Determinants of Maritime Piracy" 
+title: "Determinants of Maritime Piracy"
 author: "Bjoern Boening, Laurence Hendry & Cody Koebnick"
-biglogo: Pirate-Flag.png
 date: "4 December 2015"
-output: 
+output:
+  ioslides_presentation: default
   slidy_presentation:
     font_adjustment: -1.5
+biglogo: Pirate-Flag.png
 ---
 
 ```{r, echo=FALSE, message=FALSE}
-#helpful shortcuts for editing what is includeded in Knitr: http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html
+#helpful shortcuts for editing what is includeded in Knitr: #http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html
 library(base)
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
@@ -31,7 +32,7 @@ library(maps)
 library(reshape)
 library(pander)
 
-try()
+try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"), silent=TRUE)
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
 try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"),silent=TRUE)
 shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
@@ -68,6 +69,7 @@ names(shipping)[7] <- 'success Ratio'
 
 ```{r, echo=FALSE}
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
+try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"), silent=TRUE)
 globe <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
 URL <- 'https://en.wikipedia.org/wiki/List_of_countries_by_length_of_coastline'
@@ -221,7 +223,9 @@ plotmeans(shipping$`success Ratio` ~ year, main="Average Success Ratio of Pirate
 
 ## Adding Variables:  Military Expenditure and Military Conflicts
 ```{r, echo=FALSE}
-try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
+getwd()
+try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"), silent=TRUE) 
+#try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"), silent=TRUE)
 #import data
 # empty cells are now coded with NA and can manually be excluded from any function with na.omit command
 ucdp.prio <- read.csv("124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
