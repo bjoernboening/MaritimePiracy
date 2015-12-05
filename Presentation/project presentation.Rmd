@@ -4,8 +4,10 @@ author: "Bjoern Boening, Laurence Hendry & Cody Koebnick"
 date: "4 December 2015"
 output:
   slidy_presentation:
-    font_adjustment: -1.2
-  ioslides_presentation: default
+   font_adjustment: -0.5
+  ioslides_presentation:
+    transition: slower
+    logo: logo.png
 ---
 
 ```{r, echo=FALSE, message=FALSE}
@@ -30,6 +32,7 @@ library(maptools)
 library(maps)
 library(reshape)
 library(pander)
+library(Amelia)
 
 try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"), silent=TRUE)
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
@@ -49,22 +52,22 @@ names(shipping)[7] <- 'success Ratio'
 
 ## Contents
 - Introduction & Contents
-    + A 21st Century Problem: Maritime Piracy
-    + Our Data
-- Bjoern
-    + Model
-    + Analysis
-    + Results
+    + Maritime Piracy:  Our Data for this 21st Century Problem
 - Laurence
     + Global Overview: Piracy and Maritime Defence Propensity 
     + Regional Focus: Piracy in the South China Sea
     + Regional Focus: Piracy in the Gulf of Aden & Arabian Sea
 - Cody
-    + Model 
-    + Analysis
-    + Results
+    + Aggregated Data: The 8 Countries with Highest Amounts of Piracy  
+    + Adding Variables:  Military Expenditure and Military Conflicts
+    + Regression Results 
+- Bjoern
+    + Model
+    + Model & Chi Square Test
+    + Innocent Logistic Model
+    + Scrutinise Us
 
-## Global Overview: Piracy and Maritime Defence Propensity 
+## Global Overview: Piracy and Maritime Defence Propensity {.smaller .build}
 
 ```{r, echo=FALSE}
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
@@ -140,7 +143,7 @@ globejs(img=earth, bg="black", lat=globe$latitude, long=globe$longitude, value=g
 - 3D Globes using the 'threejs' Package: The [3D Globe package](file:///Users/laurencehendry/GoogleDrive/Master%20Thesis%20-%20Shared/MPP-E1180%20-%20Introduction%20to%20Collaborative%20Social%20Science%20Data%20Analysis/Laurence-Github/Working%203D%20Globe/Model%20v1.html)
 
 
-## Regional Focus: Piracy in the South China Sea
+## Regional Focus: Piracy in the South China Sea {.smaller}
 ```{r, echo=FALSE}
 ######################################
 # Create a Globe Viewer 2: Using 'Steaming.Recode' for arcs; SEAsia region focus; Indonesia highlighted -LH
@@ -168,7 +171,7 @@ globejs(img=earth, bg="black", lat=globe$latitude, long=globe$longitude, value=g
 - H0: Stationary ships are no less, or less likely, to be attacked than moving ships in Southeast Asia.
 - We can observe that whether a ship was moving (dot) or stationary (arc) appears to make little difference to the number of relative pirate attacks. 
 
-## Regional Focus: Piracy in the Gulf of Aden & Arabian Sea
+## Regional Focus: Piracy in the Gulf of Aden & Arabian Sea {.smaller}
 ```{r, echo=FALSE}
 ######################################
 # Create a Globe Viewer 3: Using 'Steaming.Recode' for arcs; Africa region focus; Somalia highlighted -LH
@@ -197,7 +200,7 @@ globejs(img=earth, bg="black", lat=globe$latitude, long=globe$longitude, value=g
 - We can observe that whether a ship was moving (dot) or stationary (arc) appears to make a large difference to the number of relative pirate attacks. Ships that were underway were more likely to be attacked. 
 
 
-## Aggregated Data: The 8 Countries with Highest Amounts of Piracy
+## Aggregated Data: The 8 Countries with Highest Amounts of Piracy 
 ```{r, echo=FALSE}
 # import data
 # empty cells are now coded with NA and can manually be excluded from any function with na.omit command
@@ -220,7 +223,7 @@ plotmeans(shipping$`success Ratio` ~ country, main="Average Success Ratio of Pir
 plotmeans(shipping$`success Ratio` ~ year, main="Average Success Ratio of Pirates per Year", data=shipping, xlab="Year", ylab="Success Ratio")
 ```
 
-## Adding Variables:  Military Expenditure and Military Conflicts
+## Adding Variables:  Military Expenditure and Military Conflicts 
 ```{r, echo=FALSE}
 getwd()
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"), silent=TRUE) 
@@ -319,7 +322,7 @@ plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`, xlab="I
 plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`, xlab="Military Expenditure", ylab="Attacks Per Year")
 ```
 
-## Regression Results 
+## Regression Results {.smaller}
 
 ```{r, echo=FALSE}
 ###############
@@ -331,4 +334,130 @@ pander(ols10)
 
 fixed8 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
 summary(fixed8)
+```
+
+```{r, echo=FALSE}
+######
+#IMPORT & DATA WRANGLING
+######
+# set working directories 
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
+try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"))
+try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy")) 
+#getwd()
+#import data
+# empty cells are coded with NA and can manually be excluded from any function with na.omit command
+micro <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+# have a look at how the variables are created
+#str(micro)
+#subsetting (keep) variables
+sub <- micro[c(4, 6, 12, 18, 24, 23)]
+
+#renaming and recoding
+names(sub)[1] <- 'year'
+
+names(sub)[2] <- 'time'
+sub$time <- factor(sub$time,
+                    levels = c(1,2,3,4))
+
+names(sub)[3] <- 'state'
+
+names(sub)[4] <- 'type'
+sub$type[sub$type==1] <- 222
+sub$type[sub$type==5] <- 222
+sub$type[sub$type==9] <- 222
+sub$type[sub$type==2] <- 111
+sub$type[sub$type==3] <- 111
+sub$type[sub$type==4] <- 111
+sub$type[sub$type==6] <- 111
+sub$type[sub$type==7] <- 111
+sub$type[sub$type==8] <- 111
+sub$type[sub$type==111] <- 1
+sub$type[sub$type==222] <- 2
+sub$type <- factor(sub$type)
+names(sub)[5] <- 'incident'
+sub$incident <- factor(sub$incident)
+names(sub)[6] <- 'stat'
+sub$stat <- factor(sub$stat,
+                    levels = c(1,2,3,4))
+sub$status <- recode(sub$stat, "c(1)='1'; c(2,3,4)='2'") # what a bastard this line was arrgg
+sub$stat = NULL
+
+# Delete missing values
+#table(sub$year, useNA = "always")
+#table(sub$time, useNA = "always")
+sub$time[sub$time==-99] <- NA
+#table(sub$status, useNA = "always")
+sub$status[sub$status==-99] <- NA
+#table(sub$type, useNA = "always")
+sub$type[sub$type==-99] <- NA
+sub$type[sub$type==22] <- NA
+sub$type[sub$type==696] <- NA
+sub$type[sub$type==10] <- NA
+#table(sub$incident, useNA = "always")
+sub$incident[sub$incident==-99] <- NA
+#table(sub$state, useNA = "always")
+# Omit NAs # not working must create a new data frame
+#sub$time <- na.omit(sub$time)
+#sub$status <- na.omit(sub$status)
+#sub$type <- na.omit(sub$type)
+#sub$incident <- na.omit(sub$incident)
+
+```
+
+
+## Model
+
+What has determined maritime piracy between 1995 and 2014?
+
+```{r, echo=FALSE}
+suc_ratio <- ggplot(na.omit(sub))
+suc_ratio + aes(factor(incident)) + geom_bar()
+suc_ratio <- geom_bar()
+
+```
+
+## Model & Chi Square Test
+
+- H1. The success rate of an attacks shrinks for big ships,
+- H2. And for vessels in motion,
+- H3. And during the day.
+
+```{r, echo=FALSE}
+sub$incident <- factor(sub$incident)
+sub$type <- factor(sub$type)
+sub$status <- factor(sub$status)
+sub$time <- factor(sub$time)
+tab <- table(na.omit(sub)$incident,na.omit(sub)$type) # A will be rows, B will be columns
+tab1 <- table(na.omit(sub)$incident,na.omit(sub)$status) # A will be rows, B will be columns 
+tab2 <- table(na.omit(sub)$incident,na.omit(sub)$time) # A will be rows, B will be columns 
+```
+
+### Ship Type
+```{r, echo=FALSE}
+summary(tab, digits = 2)
+```
+### Ship status (Factor)
+```{r, echo=FALSE}
+summary(tab1, digits = 2)
+```
+### Time of day (Factor)
+```{r, echo=FALSE}
+summary(tab2, digits = 2)
+```
+
+
+## Innocent Logistic Model
+
+```{r, echo=FALSE, results="asis"}
+model <- glm(incident ~ type,  family=binomial(link='logit'),data=sub)
+#summary(model)
+stargazer(model, digits = 2,  title="Regression Results",  type = "html")
+```
+
+
+## Srutinize us
+
+```{r, echo=FALSE}
+missmap(sub, main = "Too much NAs?")
 ```

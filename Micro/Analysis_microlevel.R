@@ -124,7 +124,7 @@ hist(sub$time)
 #TABLES
 ######
 
-# ship type (numeric)
+# ship type (factor)
 tab <- table(na.omit(sub)$incident,na.omit(sub)$type) # A will be rows, B will be columns 
 tab # print table 
 margin.table(tab, 1) # A frequencies (summed over B) 
