@@ -27,7 +27,7 @@ library(Hmisc) # variable labels
 library(Amelia) # map missing values 
 
 ######
-#IMPORT & DATA WRANGLING
+#IMPORT
 ######
 
 # set working directories 
@@ -43,12 +43,18 @@ str(micro)
 #subsetting (keep) variables
 sub <- micro[c(4, 6, 12, 18, 24, 23)]
 
+######
+#DATA WRANGLING
+######
+
 #renaming and recoding
 names(sub)[1] <- 'year'
 
 names(sub)[2] <- 'time'
 sub$time <- factor(sub$time,
-                    levels = c(1,2,3,4))
+                    levels = c(1,2,3,4),
+                    labels = c("early", "day", "evening", "night"))
+sub$time <- factor(sub$time)
 
 names(sub)[3] <- 'state'
 
@@ -64,62 +70,67 @@ sub$type[sub$type==7] <- 111
 sub$type[sub$type==8] <- 111
 sub$type[sub$type==111] <- 1
 sub$type[sub$type==222] <- 2
+sub$type[sub$type==-99] <- NA
+sub$type[sub$type==10] <- NA
+sub$type[sub$type==22] <- NA
+sub$type[sub$type==696] <- NA
+sub$type <- factor(sub$type,
+                   levels = c(1,2),
+                   labels = c("big", "small"))
 sub$type <- factor(sub$type)
 
 names(sub)[5] <- 'incident'
+sub$incident[sub$incident==-99] <- NA
+sub$incident <- factor(sub$incident,
+                   levels = c(0,1),
+                   labels = c("attempted", "acutal"))
 sub$incident <- factor(sub$incident)
 
 names(sub)[6] <- 'stat'
+sub$stat[sub$stat==-99] <- NA
 sub$stat <- factor(sub$stat,
                     levels = c(1,2,3,4))
 sub$status <- recode(sub$stat, "c(1)='1'; c(2,3,4)='2'") # what a bastard this line was arrgg
+sub$status <- factor(sub$status,
+                   levels = c(1,2),
+                   labels = c("moving", "stationary"))
+sub$status <- factor(sub$status)
 sub$stat = NULL
 
-# Delete missing values
-table(sub$year, useNA = "always")
-table(sub$time, useNA = "always")
-sub$time[sub$time==-99] <- NA
-table(sub$status, useNA = "always")
-sub$status[sub$status==-99] <- NA
-table(sub$type, useNA = "always")
-sub$type[sub$type==-99] <- NA
-sub$type[sub$type==22] <- NA
-sub$type[sub$type==696] <- NA
-sub$type[sub$type==10] <- NA
-table(sub$incident, useNA = "always")
-sub$incident[sub$incident==-99] <- NA
-table(sub$state, useNA = "always")
-# Omit NAs # not working must create a new data frame
-#sub$time <- na.omit(sub$time)
-#sub$status <- na.omit(sub$status)
-#sub$type <- na.omit(sub$type)
-#sub$incident <- na.omit(sub$incident)
+# Delete missing values through listwise deletion
+# might need revision for the analysis
+sub <- na.omit(sub)
 
 ######
 #DESCRIPTIVE STATS
 ######
 
-# barplot for frequency of attacks by country
-suc_ratio <- ggplot(na.omit(sub))
-suc_ratio + aes(factor(incident)) + geom_bar()
-suc_ratio <- geom_bar()
-#suc_ratio + labs(title = "Success Ratio of Piracy Attacks")
-#suc_ratio + ylabs("Total Frequency from 1993 to 2014")
-#suc_ratio + xlab("0=attempted 1=actual")
-#chi <- table(sub$incident)
-#chisq.test(na.omit(sub)$type, na.omit(sub)$incident)
-#data <- structure(list(W= c(399L, 82L, 29L), 
- #                      X = c(370L, 100L, 25L)), 
-  #                .Names = c("Female", "Male"), class = "data.frame", row.names = c(NA, -3L))
-#attach(data)
-#print(data)
-#barplot(as.matrix(chi), main="Frequency plots", ylim = c(0,4000), ylab = "Total Frequency", xlab = "1=type 2=blab", cex.lab = 1.2, cex.main = 1.4, beside=TRUE)
-#legend("topright", c("One workshop", "Two workshops"), cex=0.7, bty="n", fill=colours)
+# barplot for frequency of attacks
+a <- ggplot(data=na.omit(sub), aes(x=incident))
+a + geom_bar(stat="bin") +
+  xlab("Incidents") +
+  ylab("Frequency") +
+  ggtitle("Frequency of Attacks")
 
-#Histogram of ship type
-hist(sub$type, xlab = "ship types", main = paste("Histogram of type"))
-#Histogram of successful attacks per year
-hist(sub$time)
+#barcharts yaxis indicidents and xaxis for predictors
+b <- ggplot(sub, aes(type, ..count..)) 
+b + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Type") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks on different ship types")
+
+c <- ggplot(sub, aes(time, ..count..)) 
+c + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Time") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks with time of day")
+
+d <- ggplot(sub, aes(status, ..count..)) 
+d + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Status") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks with ship status")
+
 ######
 #TABLES
 ######
@@ -158,8 +169,12 @@ prop.table(tab2, 2) # column percentages
 ######
 
 #loged odds ratio - logistic regression "logit"
-model <- glm(incident ~ type,  family=binomial(link='logit'),data=sub)
-summary(model)
+m1 <- glm(incident ~ type,  family=binomial(link='logit'),data=sub)
+summary(m1)
+stargazer(m1, digits = 2,  title="Regression Results", align=TRUE, type = "html")
+
+m2 <- glm(incident ~ time, family=binomial(link='logit'),data=sub)
+summary(m2)
 stargazer(model, digits = 2,  title="Regression Results", align=TRUE, type = "html")
 
 ######
