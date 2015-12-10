@@ -22,3 +22,73 @@ plot(cars)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+
+Introduction
+https://www.swp-berlin.org/fileadmin/contents/products/research_papers/2011_RP03_mrs_ks.pdf 
+With a fleet of around 3,500 of the world’s largest merchant vessels, Germany has a strong motivation to ensure the security of global sea routes, with an average of EUR 47.4 million lost to trading disruption annually, and 1,400 service-men and women actively engaged in counter-piracy measures today. 
+Increasingly, German foreign policy maritime piracy has paid special attention toward the Horn of Africa. ATALANTA, the European Union's naval mission to this area, currently patrols along the coast of Somalia to defend trading vessels from maritime piracy attacks. As it seems, fading media attention does not presuppose a reduced danger of maritime piracy globally.
+Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected. Interestingly not all piracy attacks are successful, and the ratio varies from country to country and over time. So what drives piracy attacks, why and when are they successful?
+Research Design
+This paper seeks to conduct research and propose several testable hypotheses that can be modeled to explain key trends, insights and patterns in global piracy levels, and identify circumstances in which attacks are successful.
+Pursuant to this, our paper is structured with three key focuses:
+i)	Global and regional overview: coastal length & vessel status determinants
+ii)	Country-piracy rankings and the effect of military expenditure
+iii)	Success ratios determinants for piracy attacks 
+Does the number of attacks decrease the likelihood of attacks being successful?
+The dependent variable is the success rate of piracy attacks, calculated by the number of successful attacks divided by the total number of attacks. We expect that mainly the total number of attacks has an impact on this ratio. The fact that the dependent variable actually consists of our key independent variable is dangerous. However, we think that there must be a visible learning effect, either from law enforcement bodies, the shipping crew, or the pirates. So far this was the only feasible way we could have a look at this effect.
+Furthermore, additional exogenous variables will be included that in theory should have an impact on the inspected success rate. GDP (per capita per year) as a mirror for the economic incentives to conduct piracy is expected to influence the success rate over time. Likewise, a country's ratio of coast line to its land area should be a good demarker, whether piracy attacks happen more often.
+1.	After a certain amount of piracy attacks, the success rate has a peek and will decrease.
+2.	The higher the GDP, the less incentive there is to conduct an attack and only less skilled pirates will make attempts, hence the success rate decreases.
+3.	The higher the coast-land ratio is, the more people decide to conduct attacks and skilled pirates emerge, hence the success rate increases.
+Data & Definition of Piracy 
+To commence our understanding for piracy under the United Nations Convention on the Law of the Sea, we define a piracy attack for the purpose of our study under Article 101:
+Article 101 Definition of piracy Piracy consists of any of the following acts: 
+(a) any illegal acts of violence or detention, or any act of depredation, committed for private ends by the crew or the passengers of a private ship or a private aircraft, and directed: (i) on the high seas, against another ship or aircraft, or against persons or property on board such ship or aircraft; (ii) against a ship, aircraft, persons or property in a place outside the jurisdiction of any State; 
+(b) any act of voluntary participation in the operation of a ship or of an aircraft with knowledge of facts making it a pirate ship or aircraft; 
+(c) any act of inciting or of intentionally facilitating an act described in subparagraph (a) or (b). 
+
+The International Maritime Bureau (IMB) collects since 1992 all reported piracy attack globally. Since then it publishes annually an overview of all attacks that happened in a year. These annual reports provided by the IMB contain detailed information about every incident, which allows for further analysis of distinct types of piracy attacks, for instance successful attacks v. attempted attacks.
+The annual reports were scraped with text analysis tools. Our team received a "ready to use" dataset from a research project from the university of Tennessee, including all global piracy attacks from 1994 to 2014.
+Additional Data Gathering: World Bank & Wikipedia Country Coast-Area Ratios
+The original dataset contains the attacks that were reported by the victims of piracy. As an additional variable, relevant to our field of piracy investigation and patrols, we were intrigued by the relative effect that a longer coast length of a country has on the level of attacks that country suffers. To address this question we parsed a table titled "List of countries by length of coastline" from a Wikipedia page that had, in turn, used information from the CIA World Factbook. We then merged this coastline data with our existing dataframe using a 'right outer join'.
+Of critical interest to us were the respective 'Coast/Area' ratios (measured in km of coast length to km of square land) that serves as an insightful control for our country dependent variable.
+The information about the gross domestic product comes from the Worldbank and was scraped with the WDI package for R. The scraped data comes in a country-year format, thus it comes already in a format we need to conduct our analysis.
+
+
+Global and Regional Overview: Coastal Length & Vessel Status Determinants
+Our global overview model provides insight on the issue of piracy 'on the high seas', by investigating whether a country's coastal length has an effect on the number and location of pirate attacks we can observe. The assumption here is that if a country has a higher coastal to country ratio (an island-state, such as Malta in figure 2, for instance) then it should be less likely that that country is affected by maritime piracy, since there is a greater incentive to defend itself and maritime defence is therefore prioritised and greater in that country.
+H1: Most pirate attacks occur in areas where countries have smaller country-to-coast ratios, and thus are less incentivised to defend against maritime pirate attacks. 
+H0: Whether a country has a greater country-to-coast ratio has either an inverse or no effect on where pirate attacks occur.
+To observe this we have coded the arc length (shown in black) of the individual attacks that occur to show height of coastline-to-country ratios. If there is a tall arc, then the country has a proportionately higher coastal size. The expectation is therefore that fewer tall arcs should appear since these countries are actively patrolling and bordering their vulnerable coastlines.
+ 
+Figure 1 Global Overview: Piracy and Maritime Defence Propensity
+Nb. Arc length indicates high coast length to country mass
+This is not always the case, depending on region. Our H1 remains true for the area around the Gulf of Aden and particularly in the Arabian Sea, where countries with less incentive to defend maritime areas do indeed suffer from higher attack frequency. Oman, Pakistan, India, Somalia, Kenya and Tanzania are prime examples of this pattern.
+However, the results change when shifting focus to the South China Sea. Despite Indonesia and the Philippines (highlighted in figure 1) having very long coastal lengths, a lot of attacks can be observed. This confirms our H0 null hypothesis, with contrary results occuring for Southeast Asian States.
+
+ 
+Figure 2 Regional Focus: Mediterranean and example of Malta
+
+
+
+Figure 3 Regional Focus: Piracy in the South China Sea (Indonesia highlighted)
+
+H1: Stationary ships are more likely to be attacked than moving ships in Southeast Asia. 
+H0: Stationary ships are no less, or less likely, to be attacked than moving ships in Southeast Asia.
+In this globe we take a regional focus for Southeast Asia. We can observe that whether a ship was moving (dot) or stationary (arc) appears to make little difference to the number of relative pirate attacks. This could be potentially due to the archipelago maritime geography; with many ports concentrated in a small area pirates may have similar accessibility to pirating trade both for anchored ships as well as for ships underway.
+
+ 
+Figure 4 Regional Focus: Piracy in the Gulf of Aden & Arabian Sea (Somalia highlighted)
+Nb. Arc length indicates vessel status (moving to stationary)
+
+H1: Stationary ships are more likely to be attacked than moving ships in the Arabian Sea. 
+H0: Stationary ships are no less, or less likely, to be attacked than moving ships in the Arabian Sea.
+In this globe we take a regional focus for the Arabian Sea that includes the Gulf of Aden. We can observe that whether a ship was moving (dot) or stationary (arc) appears to make a large difference to the number of relative pirate attacks. Ships that were underway were more likely to be attacked. This is likely due to how large oceangoing ship traffic often transits through the Arabian Sea, but does not anchor. Pirates are therefore forced to conduct mobile pirate raids.
+
