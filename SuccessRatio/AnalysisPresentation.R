@@ -20,6 +20,7 @@ library(countrycode) # provides world bank country codes
 library(gplots)
 library(plm)
 library(knitr)
+library(stargazer)
 
 
 # set working directories 
@@ -44,6 +45,8 @@ names(shipping)[4] <- 'GDP per cap'
 names(shipping)[5] <- 'attacks/Year'
 names(shipping)[6] <- 'successful Attacks/Year'
 names(shipping)[7] <- 'success Ratio'
+
+hist(shipping$`attacks/Year`, main='Frequency of Attacks per Year in Bins', xlab='Number of Attacks per Year', ylab='Frequency')
 
 plotmeans(shipping$`success Ratio` ~ country, main="Average Success Ratio of Pirates per Country", data=shipping, xlab="Country", ylab="Success Ratio")
 
@@ -140,19 +143,32 @@ remove(list=c("x2"))
 remove(list=c("ship.ucdp"))
 
 #histogram of attack success over GDP per cap
-plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`)
+plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`, main='Visualizing the Correlation Between Armed Conflict and Military Expenditures', xlab='Conflict Intensity', ylab='Military Expenditures')
 
-plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`)
+plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`, main='Visualizing the affect of Military Expenditure on Piracy Rates', xlab='Military Expenditures', ylab='Number of Attacks per Year')
 
 ###############
 ## Inferential Statistics
 ###############
 
-ols10 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`coast/Area ratio (m/km2)` + ship.ucdp.mil$`GDP per cap` + ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil)
-summary(ols10)
+ols1 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$IntensityLevel, data=ship.ucdp.mil)
+summary(ols1)
 
-fixed8 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
-summary(fixed8)
+ols2 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil)
+summary(ols2)
 
+ols3 <-lm(ship.ucdp.mil$`attacks/Year` ~ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`coast/Area ratio (m/km2)`, data=ship.ucdp.mil)
+summary(ols3)
+
+ols4 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`coast/Area ratio (m/km2)` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil)
+summary(ols4)
+
+fixed1 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure`x, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed1)
+
+fixed2 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil, index=c("country", "year"), model="within",)
+summary(fixed2)
+
+stargazer(ols1, ols2, ols3, ols4, fixed1, fixed2, type = "html")
 
 

@@ -58,6 +58,7 @@ names(shipping)[7] <- 'success Ratio'
     + Regional Focus: Piracy in the South China Sea
     + Regional Focus: Piracy in the Gulf of Aden & Arabian Sea
 - Cody
+<<<<<<< HEAD
     + Aggregated Data: The 8 Countries with Highest Amounts of Piracy  
     + Adding Variables:  Military Expenditure and Military Conflicts
     + Regression Results 
@@ -66,6 +67,11 @@ names(shipping)[7] <- 'success Ratio'
     + Model & Chi Square Test
     + Innocent Logistic Model
     + Scrutinise Us
+=======
+    + Model1
+    + Analysis
+    + Results
+>>>>>>> origin/master
 
 ## Global Overview: Piracy and Maritime Defence Propensity {.smaller .build}
 

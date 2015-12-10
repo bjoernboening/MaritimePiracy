@@ -165,5 +165,5 @@ stargazer(model, digits = 2,  title="Regression Results", align=TRUE, type = "ht
 ######
 #CAVEATS
 ######
-
+# show distribution of NAs in all variables in the data frame
 missmap(sub, main = "Too much NAs?")
