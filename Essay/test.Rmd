@@ -448,9 +448,34 @@ tab1 <- table(na.omit(sub)$incident,na.omit(sub)$status) # A will be rows, B wil
 tab2 <- table(na.omit(sub)$incident,na.omit(sub)$time) # A will be rows, B will be columns 
 ```
 
+### Ship Type
+
 ```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Type", fig.align='left'}
 summary(tab)
 ```
 
 First let us inspect the variable for the ships' type. With this high chi square value there is evidence that the relationship between the two variable is indeed very strong and is likely to be observed in the larger population out of our sample as well.
+
+### Ship Status
+
+Second variable of interest is a vessel's status. The extraordinary high chi square value leaves no doubt. Both variables are strongly related, and it is very likely to find this relationship not only in our sample.
+
+```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Status", fig.align='left'}
+summary(tab1)
+```
+
+### Time of Day
+
+Likewise, the chi-square value suggests that the time variable is strongly related with the dependent variable for piracy attacks. 
+
+```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Time of Day", fig.align='left'}
+summary(tab2)
+```
+
+
+After all we can conclude, that all presented variables do matter for determining whether an attack is successful or not. The status has by far the strongest relationship, followed by the ship type. The weakest relationship has time of day, but it is still highly significant. 
+
+## Modelling
+
+In this section we will present models based on the initial assumptions, and on the information gained in the data preparation and descriptive statistics section. A simple logistic regression will be applied in all three models, where the reference category always follows the assumption from the hypotheses, or in other words we want to calculate the odds ratios for the events that we expect to have a lower risk of a successful attack.
 
