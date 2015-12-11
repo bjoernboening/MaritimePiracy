@@ -131,6 +131,14 @@ d + geom_bar(aes(fill = incident), position = "dodge") +
   ylab("Incidents") + 
   ggtitle("Frequency of Attacks with ship status")
 
+#barcharts yaxis indicidents and xaxis for years
+e <- ggplot(na.omit(sub), aes(year, ..count..)) 
+e + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Years") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks in different years")
+
+
 ######
 #TABLES
 ######

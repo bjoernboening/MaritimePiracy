@@ -382,7 +382,7 @@ sub$stat = NULL
 
 Digging deeper into the field of maritime piracy studies reveals that patterns of maritime piracy changed over time and per region. Among the many incidents in global hotspots for piracy, not all incidents are successful. But why are some pirates more successful than others? Whilst we understand that the danger of an attack differs depending on some few characteristics, it is possible to change behaviour and protect the crew and the cargo. The idea for this research paper is, thus, to identify under which circumstances an attack is successful. What has determined the success rate of maritime piracy attacks during 1995 and 2014?
 
-```{r, echo=FALSE, fig.cap="Frequency of attempted and successful attacks", fig.height=2, fig.width=2}
+```{r, echo=FALSE, fig.cap="Frequency of attempted and successful attacks", fig.height=2.5, fig.width=2.5}
 # barplot for frequency of attacks
 a <- ggplot(data=na.omit(sub), aes(x=incident))
 a + geom_bar(stat="bin") +
@@ -406,5 +406,19 @@ The original data comes from the International Maritime Bureau, or IMB. Since 19
 
 The unit of analysis in all datasets is the single attack, or in other words one row equals one attack. As my analysis builds up on the dataset from Professor Daxecker, in the following I will refer to her version of the dataset solely. The dataset comes already slightly reduced. It contains 25 variables, and counts 6.343 attacks in between 1993 and 2014. I kept the wide format of the dataset, but reduced it to the variables of interest. In more concrete terms, you will find a binary coded dependent variable for the incident type, or whether an attack was successful or not. The explanatory variables are the ship type, adjusted depending on the model, the ship's status, or if it is moving or not and a time of day variable splitting one day into 4 time categories. Still, the necessary variables needed some wrangling. I cleaned them from missing and nonsensical values, renamed the variable and value labels, and grouped some categories of the key categorical variables.
 
+We ended up with attacks in between 1995 and 2014. Take a look at the graph below to get a first idea of how they are distributed.
+
+```{r, echo=FALSE, fig.cap="Attempted and actual Attacks over years"}
+#barcharts yaxis indicidents and xaxis for years
+e <- ggplot(na.omit(sub), aes(year, ..count..)) 
+e + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Years") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks in different years")
+```
+
+Given this graph one might ask, why are there spikes in 2003 and 2008 to 2011, or vice versa why are there so few attacks reported in 1997 to 2000? The latter question is hard to answer, as the attacks are self-reported. It is known, however, that in the early days of the data gathering not many crews were aware of the IMB and its new mission to understand (and finally lower the risk of) piracy.
+
+Apparently it first needed a critical mass to get the thing rolling, and furthermore modern technologies made it easy to send a report quickly. The spikes already give an idea of how contemporary piracy developed. The year 2003 was certainly the most dangerous year of piracy in Indonesia , and from 2007 until 2012 Somalia is accountable for the vast majority of piracy attacks.
 
 
