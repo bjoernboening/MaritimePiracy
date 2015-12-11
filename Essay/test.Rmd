@@ -398,6 +398,13 @@ In theory there are many possible factors that influence the process of a piracy
 * H2. And for vessels in motion, 
 * H3. And during the day.
 
+## Micro Level: Data Description
+
+In this section we try to make sense of the data, and explain in which format it will be used for the analysis.
+
+The original data comes from the International Maritime Bureau, or IMB. Since 1991 they gather global piracy incidents in a standardized format and publish some statistics and their raw data in an annual report. A research team around Professor Christian Traxler from the Hertie School of Governance parsed the data out of the annual reports in PDF format, and merged them into one dataset about piracy attacks from 1993 to 2011 (counts 5619 attacks). As a courtesy from Professor Ursula Daxecker from the University of Amsterdam, I received a ready-to-use dataset, which as a subset of the original data contains slightly differently coded and less variables for the analysis from 1993 to 2014 (counts 6.343 attacks). 
+
+The unit of analysis in all datasets is the single attack, or in other words one row equals one attack. As my analysis builds up on the dataset from Professor Daxecker, in the following I will refer to her version of the dataset solely. The dataset comes already slightly reduced. It contains 25 variables, and counts 6.343 attacks in between 1993 and 2014. I kept the wide format of the dataset, but reduced it to the variables of interest. In more concrete terms, you will find a binary coded dependent variable for the incident type, or whether an attack was successful or not. The explanatory variables are the ship type, adjusted depending on the model, the ship's status, or if it is moving or not and a time of day variable splitting one day into 4 time categories. Still, the necessary variables needed some wrangling. I cleaned them from missing and nonsensical values, renamed the variable and value labels, and grouped some categories of the key categorical variables.
 
 
 
