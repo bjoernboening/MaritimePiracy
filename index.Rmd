@@ -1,6 +1,6 @@
 ---
 title: "Determinants of Maritime Piracy"
-author: "Björn Boening, Cody Koebnick, Laurence Hendry"
+author: "Bjoern Boening, Cody Koebnick, Laurence Hendry"
 date: "12. November 2015"
 output:
   html_document: default
@@ -31,7 +31,7 @@ library(maps)
 
 try()
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
-try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"),silent=TRUE))
+try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"),silent=TRUE)
 shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
 #renaming and dropping some of our columns 
