@@ -59,15 +59,15 @@ sub$time <- factor(sub$time)
 names(sub)[3] <- 'state'
 
 names(sub)[4] <- 'type'
-sub$type[sub$type==1] <- 222
-sub$type[sub$type==5] <- 222
-sub$type[sub$type==9] <- 222
-sub$type[sub$type==2] <- 111
-sub$type[sub$type==3] <- 111
-sub$type[sub$type==4] <- 111
-sub$type[sub$type==6] <- 111
-sub$type[sub$type==7] <- 111
-sub$type[sub$type==8] <- 111
+sub$type[sub$type==1] <- 111
+sub$type[sub$type==5] <- 111
+sub$type[sub$type==9] <- 111
+sub$type[sub$type==2] <- 222
+sub$type[sub$type==3] <- 222
+sub$type[sub$type==4] <- 222
+sub$type[sub$type==6] <- 222
+sub$type[sub$type==7] <- 222
+sub$type[sub$type==8] <- 222
 sub$type[sub$type==111] <- 1
 sub$type[sub$type==222] <- 2
 sub$type[sub$type==-99] <- NA
@@ -76,7 +76,7 @@ sub$type[sub$type==22] <- NA
 sub$type[sub$type==696] <- NA
 sub$type <- factor(sub$type,
                    levels = c(1,2),
-                   labels = c("big", "small"))
+                   labels = c("small", "big"))
 sub$type <- factor(sub$type)
 
 names(sub)[5] <- 'incident'
@@ -90,10 +90,10 @@ names(sub)[6] <- 'stat'
 sub$stat[sub$stat==-99] <- NA
 sub$stat <- factor(sub$stat,
                     levels = c(1,2,3,4))
-sub$status <- recode(sub$stat, "c(1)='1'; c(2,3,4)='2'") # what a bastard this line was arrgg
+sub$status <- recode(sub$stat, "c(1)='2'; c(2,3,4)='1'") # what a bastard this line was arrgg
 sub$status <- factor(sub$status,
                    levels = c(1,2),
-                   labels = c("moving", "stationary"))
+                   labels = c("stationary", "moving"))
 sub$status <- factor(sub$status)
 sub$stat = NULL
 
@@ -167,15 +167,20 @@ prop.table(tab2, 2) # column percentages
 ######
 #ANALYSIS
 ######
+sub$incident <- as.factor(sub$incident)
+sub$type <- as.factor(sub$type)
+sub$status <- as.factor(sub$status)
+sub$time <- as.factor(sub$time)
 
 #loged odds ratio - logistic regression "logit"
 m1 <- glm(incident ~ type,  family=binomial(link='logit'),data=sub)
 summary(m1)
-stargazer(m1, digits = 2,  title="Regression Results", align=TRUE, type = "html")
-
-m2 <- glm(incident ~ time, family=binomial(link='logit'),data=sub)
+m2 <- glm(incident ~ status,  family=binomial(link='logit'),data=sub)
 summary(m2)
-stargazer(model, digits = 2,  title="Regression Results", align=TRUE, type = "html")
+m3 <- glm(incident ~ time,  family=binomial(link='logit'),data=sub)
+summary(m3)
+
+stargazer(m1,m2,m3, digits = 2,  title="Regression Results", align=TRUE, type = "html")
 
 ######
 #CAVEATS
