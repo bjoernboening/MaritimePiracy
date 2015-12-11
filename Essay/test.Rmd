@@ -2,46 +2,24 @@
 title: "Determinants of Maritime Piracy"
 author: "Bjoern Boening, Laurence Hendry, Cody Koebnick"
 date: "10 Dezember 2015"
-output: 
-  pdf_document: 
+output:
+  word_document: default
+  pdf_document:
+    fig_caption: yes
     latex_engine: xelatex
-    toc: true
-    number_sections: true
-    fig_caption: true
+    number_sections: yes
+    toc: yes
 ---
 
 # Introduction
 
+With a fleet of around 3,500 of the world’s largest merchant vessels, Germany has a strong motivation to ensure the security of global sea routes. According to the Berlin-based think-tank Stiftung Wissenschaft und Politik (SWP), with an average of EUR 47.4 million lost to trading disruption annually and 1,400 service-men and women actively engaged in counter-piracy measures, it is a central policy area for Germany's growing prominence in international affairs. 
 
-With a fleet of around 3,500 of the world’s largest merchant vessels, Germany has a strong motivation to ensure the security of global sea routes, with an average of EUR 47.4 million lost to trading disruption annually, and 1,400 service-men and women actively engaged in counter-piracy measures today. 
+With this in mind, it is important to consider the impact of German maritime piracy policy in areas where there has been a high degree of special attention and deployments. The Horn of Africa is one such area, where ATALANTA (the European Union's naval mission to this area) currently provides for patrols along the coast of Somalia to defend trading vessels from maritime piracy attacks. Though media attention and appetite for piracy stories appears to be fading, this does not presuppose a reduced danger of maritime piracy, as will be seen in this report. 
 
-Increasingly, German foreign policy maritime piracy has paid special attention toward the Horn of Africa. ATALANTA, the European Union's naval mission to this area, currently patrols along the coast of Somalia to defend trading vessels from maritime piracy attacks. As it seems, fading media attention does not presuppose a reduced danger of maritime piracy globally.
+In contrast to consideration of German maritime policy concerns, this paper also attempts to consider the pirates' perspectives. Interestingly not all piracy attacks are successful, and the ratio varies from country to country and over time. Through gaining an understanding of what drives piracy attacks, why and when they are successful, and how much individual attacks can impact on trade we can develop a clearer model for future preventative measures. This is especially necessary since the cost intensity of deployment for international naval forces in Somalia shows how serious countries take the threat whose trade is affected, but also just how much is at stake. 
 
-Global shipping routes are highly important for trade. Piracy attacks are a potential threat for crew and cargo on the ship. The cost intensive deployment of international naval forces in Somalia shows how serious countries take the threat whose trade is affected. Interestingly not all piracy attacks are successful, and the ratio varies from country to country and over time. So what drives piracy attacks, why and when are they successful?
-Research Design
-
-# Research Design
-
-This paper seeks to conduct research and propose several testable hypotheses that can be modeled to explain key trends, insights and patterns in global piracy levels, and identify circumstances in which attacks are successful.
-
-Pursuant to this, our paper is structured with three key focuses:
-1. Global and regional overview: coastal length & vessel status determinants
-2. Country-piracy rankings and the effect of military expenditure
-3. Success ratios determinants for piracy attacks 
-
-Dividing our research into three distinct sections should aid this paper in trying to
-
-Does the number of attacks decrease the likelihood of attacks being successful?
-
-The dependent variable is the success rate of piracy attacks, calculated by the number of successful attacks divided by the total number of attacks. We expect that mainly the total number of attacks has an impact on this ratio. The fact that the dependent variable actually consists of our key independent variable is dangerous. However, we think that there must be a visible learning effect, either from law enforcement bodies, the shipping crew, or the pirates. So far this was the only feasible way we could have a look at this effect.
-
-Furthermore, additional exogenous variables will be included that in theory should have an impact on the inspected success rate. GDP (per capita per year) as a mirror for the economic incentives to conduct piracy is expected to influence the success rate over time. Likewise, a country's ratio of coast line to its land area should be a good demarker, whether piracy attacks happen more often.
-
-1.	After a certain amount of piracy attacks, the success rate has a peek and will decrease.
-2.	The higher the GDP, the less incentive there is to conduct an attack and only less skilled pirates will make attempts, hence the success rate decreases.
-3.	The higher the coast-land ratio is, the more people decide to conduct attacks and skilled pirates emerge, hence the success rate increases.
-
-# Data & Definition of Piracy 
+## A Definition for 'Piracy' 
 
 To commence our understanding for piracy under the United Nations Convention on the Law of the Sea, we define a piracy attack for the purpose of our study under Article 101:
 
@@ -50,22 +28,47 @@ Article 101 Definition of piracy Piracy consists of any of the following acts:
 (b) any act of voluntary participation in the operation of a ship or of an aircraft with knowledge of facts making it a pirate ship or aircraft; 
 (c) any act of inciting or of intentionally facilitating an act described in subparagraph (a) or (b). 
 
-The International Maritime Bureau (IMB) collects since 1992 all reported piracy attack globally. Since then it publishes annually an overview of all attacks that happened in a year. These annual reports provided by the IMB contain detailed information about every incident, which allows for further analysis of distinct types of piracy attacks, for instance successful attacks v. attempted attacks.
+## Our Data: Micro- and Macro-level
 
-The annual reports were scraped with text analysis tools. Our team received a "ready to use" dataset from a research project from the university of Tennessee, including all global piracy attacks from 1994 to 2014.
+Since 1992, the International Maritime Bureau (IMB), a daughter organisation of the International Chamber of Commerce, has reported piracy attack globally. Since then it has published an annual overview of all attacks that happened in a year that includes comprehensive details for incidents. 
 
-## Additional Data Gathering: World Bank & Wikipedia Country Coast-Area Ratios
+The dataset for this project was presented to us in a "ready to use" format by a research cluster at the University of Tennessee. Principally, our data includes information for all global piracy attacks from 1994 to 2014 that were scraped with web analysis tools from multiple reports.  A research team around Professor Christian Traxler from the Hertie School of Governance parsed the data out of the annual reports in PDF format, and merged them into one dataset about piracy attacks from 1993 to 2011 (counts 5619 attacks). As a courtesy from Professor Ursula Daxecker from the University of Amsterdam I received a ready-to-use dataset which, as a subset of the original data, contains slightly differently coded and fewer variables for the analysis from 1993 to 2014 (counts 6,343 attacks). Using these annual reports provided by the IMB we could also refine our analysis of distinct types of piracy attacks by, for instance, generating new variables that calculate average pirate success ratios over time, by dividing total attacks by the number of attacks that were reported successful.
 
-The original dataset contains the attacks that were reported by the victims of piracy. As an additional variable, relevant to our field of piracy investigation and patrols, we were intrigued by the relative effect that a longer coast length of a country has on the level of attacks that country suffers. To address this question we parsed a table titled "List of countries by length of coastline" from a Wikipedia page that had, in turn, used information from the CIA World Factbook. We then merged this coastline data with our existing dataframe using a 'right outer join'.
+The unit of analysis in all datasets is the single attack, or in other words one row equals one attack. As our analysis builds up on the dataset from Professor Daxecker, in the following we will refer to her version of the dataset solely. The dataset comes already slightly reduced. It contains 25 variables, and counts 6,343 attacks between 1993 and 2014. We kept the wide format of the dataset, but reduced it to the variables of interest. In more concrete terms, you will find a binary coded dependent variable for the incident type, or whether an attack was successful or not. The explanatory variables are the ship type, adjusted depending on the model, the ship's status, or if it is moving or not and a time of day variable splitting one day into 4 time categories. Still, the necessary variables needed some wrangling. We cleaned them from missing and nonsensical values, renamed the variable and value labels, and grouped some categories of the key categorical variables.
+
+## Additional Data Gathering: Wikipedia Country Coast-Area Ratios
+
+The original dataset contains the attacks that were reported by the victims of piracy. As an additional variable, relevant to our field of piracy investigation and patrols, we were intrigued by the relative effect that a longer coast length of a country has on the level of attacks that country suffers. To address this question we parsed a table titled "List of countries by length of coastline" from a Wikipedia page that had, in turn, used information from the CIA World Factbook. We then merged this coastline data with our existing dataframe using the 'right outer join' method.
 
 Of critical interest to us were the respective 'Coast/Area' ratios (measured in km of coast length to km of square land) that serves as an insightful control for our country dependent variable.
 
 The information about the gross domestic product comes from the Worldbank and was scraped with the WDI package for R. The scraped data comes in a country-year format, thus it comes already in a format we need to conduct our analysis.
 
+# Research Design
+
+## Note on Structure
+
+This paper seeks to conduct research and propose several testable hypotheses that can be modeled to explain key trends, insights and patterns in global piracy levels, and identify circumstances in which attacks are successful.
+
+Pursuant to this, our paper is structured around three key focuses:
+1.	*Global and Regional Overview:* Examining coastal length & vessel status determinants with the use of a global mapping tool, and with consideration of key piracy hotspots. 
+2.	*Country-Piracy Rankings and the Effect of Military Expenditure:* With the burgeoning budget of the ATALANTA member-state contributors, we attempt to investigate whether this increased spending is in fact translating into affirmative results. 
+3.	*Success Ratio Determinants for Piracy Attacks:* Considering attacks from a pirate's perspective, we consider what some of the key explanatory variables are that determine a successfully executed attack. For instance, does the number of attacks decrease the likelihood of attacks being successful?
+
+## Dependent Variable & Three Research Questions 
+
+Our dependent variable in this study is the success rate for pirate attacks, calculated by the number of successful attacks divided by the total number of attacks. We expect that mainly the total number of attacks has an impact on this ratio. The fact that the dependent variable actually consists of our key independent variable makes it fraught. However, we think that there must be a visible learning effect, either from law enforcement bodies, the shipping crew, or the pirates. So far this was the only feasible way we could observe this effect.
+
+Furthermore, additional exogenous variables have been included that in theory should have an impact on the inspected success rate. GDP (per capita per year) as a mirror for the economic incentives to conduct piracy is expected to influence the success rate over time. Likewise, a country's ratio of coast line to its land area should be a good whether piracy attacks happen more often.
+
+For our three different sections, our three research questions are therefore:
+1.	Does the number of attacks increase the higher the coast-land ratio?
+2.	Does the success rate peek and eventually decrease after a certain amount of piracy attacks?
+3.	Will success rates for pirate attacks decrease as the GDP increases, given that there is less incentive to conduct an attack and only less skilled pirates will make attempts?
 
 # Global and Regional Overview: Coastal Length & Vessel Status Determinants
 
-Our global overview model provides insight on the issue of piracy 'on the high seas', by investigating whether a country's coastal length has an effect on the number and location of pirate attacks we can observe. The assumption here is that if a country has a higher coastal to country ratio (an island-state, such as Malta in figure 2, for instance) then it should be less likely that that country is affected by maritime piracy, since there is a greater incentive to defend itself and maritime defence is therefore prioritised and greater in that country.
+Our global overview model provides insight on the issue of piracy 'on the high seas' by investigating whether a country's coastal length has an effect on the number and location of pirate attacks we can observe. The assumption here is that if a country has a higher coastal to country ratio (an island-state, such as Malta in figure 2, for instance) then it should be less likely that that country is affected by maritime piracy, since there is a greater incentive to defend itself and maritime defence is therefore prioritised and greater in that country.
 
 * H1: Most pirate attacks occur in areas where countries have smaller country-to-coast ratios, and thus are less incentivised to defend against maritime pirate attacks. 
 * H0: Whether a country has a greater country-to-coast ratio has either an inverse or no effect on where pirate attacks occur.
@@ -81,10 +84,7 @@ This is not always the case, depending on region. Our H1 remains true for the ar
 
 However, the results change when shifting focus to the South China Sea. Despite Indonesia and the Philippines (highlighted in figure 1) having very long coastal lengths, a lot of attacks can be observed. This confirms our H0 null hypothesis, with contrary results occuring for Southeast Asian States.
 
-
-
 ![Regional Focus: Mediterranean and example of Malta](fig2.png) 
-
 
 <div>
 ![Regional Focus: Piracy in the South Cina Sea (Indonesia highlighted)](fig3.png) 
@@ -109,11 +109,11 @@ In this globe we take a regional focus for the Arabian Sea that includes the Gul
 
 # The Effect of Military Expenditure and of Armed Conflict on Piracy
 
-In order to approach the question about what drives piracy, we decided to take a multi pronged approach.  While the analysis that preceded this segment of the report focused on incident level data and visualizing it in a novel way for analytical purposes, this portion of our research focuses on aggregated yearly data for the eight countries that were the closest coastal state to the most frequent occurrences of piracy.  These countries are predominantly in South East Asia, but there are a few exemptions.  The countries are: Bangladesh, Brazil, India, Indonesia, Malaysia, Nigeria, the Philippines, and Vietnam.  
+In order to approach the question for what drives piracy, we decided to take a multi-pronged approach.  While the analysis that preceded this segment of the report focused on incident level data and visualizing it in a novel way for analytical purposes, this portion of our research focuses on aggregated yearly data for the eight countries that were the closest coastal state to the most frequent occurrences of piracy.  These countries are predominantly in South East Asia, but there are a few exemptions.  The countries are: Bangladesh, Brazil, India, Indonesia, Malaysia, Nigeria, the Philippines, and Vietnam.  
 
-While it is important to note that we could be skewing our data by both selecting for countries that are home to the most frequent occurrences of piracy as well as by aggregating our data to the year level.  However, by doing we also enable several advantages.  By aggregating the data, we are able to explore the information in a different way than either of the other two sections in this research paper.   Both of the other threads of research deal with incident level data which is useful, but here we can explore questions such as: what drives the number of attacks per year, does military expenditure play a role, are there any identifiable trends among the most heavily pirated countries? 
+While it is important to note that we could be skewing our data by both selecting for countries that are home to the most frequent occurrences of piracy as well as by aggregating our data to the year level.  However, by doing we also enable several advantages.  By aggregating the data, we are able to explore the information in a different way than either of the other two sections in this research paper.   Both of the other threads of research deal with incident level data which is useful, but here we can explore questions such as: What drives the number of attacks per year? Does military expenditure play a role? Are there any identifiable trends among the most heavily pirated countries? 
 
-We begin our aggregated data level analysis with a simple histogram showing the frequency of attacks sorted by the attacks per year in bins of 20. It quickly becomes evident, that the vast majority of years had 1-20 reported attacks. The frequency then declines sharply within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range; this is due to highly pirated coastal areas such as Bangladesh and the Philippines.
+We begin our aggregated data level analysis with a simple histogram showing the frequency of attacks sorted by the attacks per year in bins of 20. It quickly becomes evident that the vast majority of years had 1-20 reported attacks. The frequency then declines sharply within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range; this is due to highly pirated coastal areas such as Bangladesh and the Philippines.
 
 ```{r, echo=FALSE, message=FALSE}
 library(base)
@@ -282,7 +282,7 @@ Below is a table of both our OLS regressions and Fixed Effects Regressions. Alth
 
 Our analysis does show that when running an OLS regression, military expenditure indeed has a statistically significant relationship with the frequency of attacks with a negative coefficient of -15.32 at a P value lower than .01%.  Additionally, this statistically significant relationship and negative coefficient remain essentially constant as we add control variables such as coast ratio and GDP per capita.  Our model consistently explains 14-15% of the variation in attacks per year as indicated by our R2.  This confirms our earlier plot graph's visual results.  Interestingly, neither GDP per capita nor coastline ratio proved to be statically significant in this model for explaining the frequency of piracy attacks.  
 
-Unfortunately when we ran a Fixed Effects regression on the data, military expenditure was no longer statistically significant when ran by itself.  Interestingly, military expenditure does become significant (at the .1 level) once GDP per capita has been added. Again the coefficient yielding is negative and are similar to the OLS results.
+Unfortunately when we ran a Fixed Effects regression on the data, military expenditure was no longer statistically significant when run by itself.  Interestingly, military expenditure does become significant (at the .1 level) once GDP per capita has been added. Again the coefficient yielding is negative and are similar to the OLS results.
 
 ```{r, echo=FALSE, message=FALSE}
 ols1 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$IntensityLevel, data=ship.ucdp.mil)
@@ -298,11 +298,9 @@ fixed1 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure
 fixed2 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil, index=c("country", "year"), model="within")
 ```
 
-Stargazer
-
 ![Table of OLS and Fixed Effects Regression Models](fig8.png)
 
-# Micro Level: Determinants for successful piracy attacks
+# Micro Level: Determinants for Successful Piracy Attacks
 
 ```{r, echo=FALSE, message=FALSE}
 # Call libraries we need for the project, make sure you have them installed
@@ -397,14 +395,6 @@ In theory there are many possible factors that influence the process of a piracy
 * H1. The success rate of an attacks shrinks for big ships,
 * H2. And for vessels in motion, 
 * H3. And during the day.
-
-## Micro Level: Data Description
-
-In this section we try to make sense of the data, and explain in which format it will be used for the analysis.
-
-The original data comes from the International Maritime Bureau, or IMB. Since 1991 they gather global piracy incidents in a standardized format and publish some statistics and their raw data in an annual report. A research team around Professor Christian Traxler from the Hertie School of Governance parsed the data out of the annual reports in PDF format, and merged them into one dataset about piracy attacks from 1993 to 2011 (counts 5619 attacks). As a courtesy from Professor Ursula Daxecker from the University of Amsterdam, I received a ready-to-use dataset, which as a subset of the original data contains slightly differently coded and less variables for the analysis from 1993 to 2014 (counts 6.343 attacks). 
-
-The unit of analysis in all datasets is the single attack, or in other words one row equals one attack. As my analysis builds up on the dataset from Professor Daxecker, in the following I will refer to her version of the dataset solely. The dataset comes already slightly reduced. It contains 25 variables, and counts 6.343 attacks in between 1993 and 2014. I kept the wide format of the dataset, but reduced it to the variables of interest. In more concrete terms, you will find a binary coded dependent variable for the incident type, or whether an attack was successful or not. The explanatory variables are the ship type, adjusted depending on the model, the ship's status, or if it is moving or not and a time of day variable splitting one day into 4 time categories. Still, the necessary variables needed some wrangling. I cleaned them from missing and nonsensical values, renamed the variable and value labels, and grouped some categories of the key categorical variables.
 
 
 
