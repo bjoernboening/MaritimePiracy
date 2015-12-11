@@ -429,7 +429,7 @@ The second group consists of small ships that are less under attack as they norm
 
 ```{r, echo=FALSE, fig.cap="Attacks on small and big ships"}
 #barcharts yaxis indicidents and xaxis for predictors
-b <- ggplot(sub, aes(type, ..count..)) 
+b <- ggplot(na.omit(sub), aes(type, ..count..)) 
 b + geom_bar(aes(fill = incident), position = "dodge") +
   xlab("Type") + 
   ylab("Incidents") + 
@@ -440,5 +440,17 @@ b + geom_bar(aes(fill = incident), position = "dodge") +
 
 Back again to the initial research question, why are some attacks successful and some are not?
 
-Now let's see, whether our key variables for the planed model are significant. As we deal only with categorical variables, the best option to test that is a Chi-Square Test. In the following you will see the summaries for all key variables, namely the vessel type (for big and small ships), their status (moving or stationary), and the time of day (early, day, evening, night).
+Now let's see, whether our key variables for the planned model are significant. As we deal only with categorical variables, the best option to test that is a Chi-Square Test. In the following you will see the summaries for all key variables, namely the vessel type (for big and small ships), their status (moving or stationary), and the time of day (early, day, evening, night).
+
+```{r, echo=FALSE}
+tab <- table(na.omit(sub)$incident,na.omit(sub)$type) # A will be rows, B will be columns 
+tab1 <- table(na.omit(sub)$incident,na.omit(sub)$status) # A will be rows, B will be columns 
+tab2 <- table(na.omit(sub)$incident,na.omit(sub)$time) # A will be rows, B will be columns 
+```
+
+```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Type", fig.align='left'}
+summary(tab)
+```
+
+First let us inspect the variable for the ships' type. With this high chi square value there is evidence that the relationship between the two variable is indeed very strong and is likely to be observed in the larger population out of our sample as well.
 
