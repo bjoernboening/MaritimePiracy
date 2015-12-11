@@ -139,9 +139,9 @@ summary(tab2, digits = 2)
 ## Innocent logistic model
 
 ```{r, echo=FALSE, results="asis"}
-model <- glm(incident ~ type,  family=binomial(link='logit'),data=sub)
+model <- glm(incident ~ time,  family=binomial(link='logit'),data=na.omit(sub))
 #summary(model)
-stargazer(model, digits = 2,  title="Regression Results",  type = "html")
+stargazer(model, digits = 2,  title="Regression Results for Time of Day",  type = "html")
 ```
 
 ## Srutinize us

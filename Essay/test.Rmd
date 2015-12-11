@@ -434,7 +434,7 @@ b + geom_bar(aes(fill = incident), position = "dodge") +
   ylab("Incidents") + 
   ggtitle("Frequency of Attacks on different ship types")
 ```
-
+\pagebreak
 ## Significance Tests
 
 Back again to the initial research question, why are some attacks successful and some are not?
@@ -450,7 +450,7 @@ tab2 <- table(na.omit(sub)$incident,na.omit(sub)$time) # A will be rows, B will 
 ### Ship Type
 
 ```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Type", fig.align='left'}
-summary(tab)
+summary(tab, digits = 2)
 ```
 
 First let us inspect the variable for the ships' type. With this high chi square value there is evidence that the relationship between the two variable is indeed very strong and is likely to be observed in the larger population out of our sample as well.
@@ -460,21 +460,75 @@ First let us inspect the variable for the ships' type. With this high chi square
 Second variable of interest is a vessel's status. The extraordinary high chi square value leaves no doubt. Both variables are strongly related, and it is very likely to find this relationship not only in our sample.
 
 ```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Status", fig.align='left'}
-summary(tab1)
+summary(tab1, digits = 2)
 ```
 
 ### Time of Day
 
-Likewise, the chi-square value suggests that the time variable is strongly related with the dependent variable for piracy attacks. 
+For the time of day a look at the data reveals that we might end up with confusing results. The total number of attacks during the morning and the day is low to begin with, so that the comparison of successful to attempted attacks might be confounded in the regression as well.
+```{r, echo=FALSE, fig.cap="Attempted and Actual Attacks during the day"}
+c <- ggplot(sub, aes(time, ..count..)) 
+c + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Time") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks with time of day")
+```
+
+
+Nevertheless, the chi-square value suggests that the time variable is strongly related with the dependent variable for piracy attacks. 
 
 ```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Time of Day", fig.align='left'}
-summary(tab2)
+summary(tab2, digits = 2)
 ```
 
 
 After all we can conclude, that all presented variables do matter for determining whether an attack is successful or not. The status has by far the strongest relationship, followed by the ship type. The weakest relationship has time of day, but it is still highly significant. 
-
+\pagebreak
 ## Modelling
 
-In this section we will present models based on the initial assumptions, and on the information gained in the data preparation and descriptive statistics section. A simple logistic regression will be applied in all three models, where the reference category always follows the assumption from the hypotheses, or in other words we want to calculate the odds ratios for the events that we expect to have a lower risk of a successful attack.
+In this section we will present models based on the initial assumptions, and on the information gained in the data preparation and descriptive statistics section. A simple logistic regression will be applied in all three models, where the reference category always follows the assumption from the hypotheses, or in other words we want to calculate the odds ratios for the events that we expect to have a lower risk of a successful attack. As we know that the majority of reported attacks is successful, we are interested in what actually reduces the risk of an attack being successful. 
 
+```{r, echo=FALSE}
+######
+#ANALYSIS
+######
+sub$incident <- as.factor(sub$incident)
+sub$type <- as.factor(sub$type)
+sub$status <- as.factor(sub$status)
+sub$time <- as.factor(sub$time)
+
+#loged odds ratio - logistic regression "logit"
+m1 <- glm(incident ~ type,  family=binomial(link='logit'),data=sub)
+#summary(m1)
+m2 <- glm(incident ~ status,  family=binomial(link='logit'),data=sub)
+#summary(m2)
+m3 <- glm(incident ~ time,  family=binomial(link='logit'),data=sub)
+#summary(m3)
+```
+
+As our paper assumes, that the piracy success rate depends on whether a ship is big or not, we start with a logistic model determining whether the ship size impacts the success rate of piracy attacks.
+
+![Table of Logistic Regression incident as a function of ship type](fig12.png)
+
+What we see here are the regression results from a logistic regression with the binary dependent variable for the incident and the ship type as the predictor, small ships being the reference category. Thus, the odds for a big ship being successfully attacked are reduced by 26 percentage points. This supports our initial hypothesis, that big ships are harder to successfully attack.
+
+![Table of Logistic Regression incident as a function of ship status](fig13.png)
+
+The next table shows the regression results for incidents as a function of the ship's status. The ship's status variable is coded binary for stationary and moving ships, moving ships being the reference category. The logistic regression suggests, that stationary ships have dramatically higher odds being successfully attacked. The odds rise by 120 percentage points. 
+
+![Table of Logistic Regression incident as a function of time of day](fig14.png)
+
+Time of day is likewise a statistically significant variable predicting whether a piracy attack is successful or not. The levels of the time variable split the day into four time periods, one for the morning, two for the day, three for the evening, and level four for the night. Although, the regression table shows that attacks during the day have slightly higher odds to be successful, only during the evening and the night the results for the odds ratio are statistically significant. As expected, the night increases the odds for successful attakcs the most by 26 percentage points. 
+
+Nevertheless, we have to be cautious with interpreting these results, but so far the effect direction is clear. For big ships the odds ratio decrease, as well as it does with moving ships and for time periods that are during the day. 
+
+\pagebreak
+
+## Micro Level Conclusions
+
+The analysis shows evidence, that all covariates, namely the ship type, its status and the time of day are important predictors when we want to determine what makes a piracy attack successful.
+So far the results suggest, that especially the status is important. The risk of an attack being successful is extremely lower for moving ships, than it is for stationary ships. Likewise, the remaining covariates showed the expected direction of effect and are strong in their relationship and statistically significant, but the size of the effect is in comparison to the ship's status slightly weaker. Hence the research question can be answered partially. The risk of an attack being successful decreases the most for a big steaming ship during bright day. Or in the contrary, the success rate increases during the night and with stationary ships, preferably small ships.
+
+Even if that result appears obvious, the analysis has shown some more interesting findings.
+1.	Apparently the ship type matters less than expected. There is no observed difference for carriers or tankers.
+2.	It would possibly make sense to further investigate the ship's status in more detail and not only limit the analysis to moving / not moving ships.
