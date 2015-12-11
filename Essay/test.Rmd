@@ -54,7 +54,7 @@ The International Maritime Bureau (IMB) collects since 1992 all reported piracy 
 
 The annual reports were scraped with text analysis tools. Our team received a "ready to use" dataset from a research project from the university of Tennessee, including all global piracy attacks from 1994 to 2014.
 
-# Additional Data Gathering: World Bank & Wikipedia Country Coast-Area Ratios
+## Additional Data Gathering: World Bank & Wikipedia Country Coast-Area Ratios
 
 The original dataset contains the attacks that were reported by the victims of piracy. As an additional variable, relevant to our field of piracy investigation and patrols, we were intrigued by the relative effect that a longer coast length of a country has on the level of attacks that country suffers. To address this question we parsed a table titled "List of countries by length of coastline" from a Wikipedia page that had, in turn, used information from the CIA World Factbook. We then merged this coastline data with our existing dataframe using a 'right outer join'.
 
@@ -71,6 +71,7 @@ Our global overview model provides insight on the issue of piracy 'on the high s
 * H0: Whether a country has a greater country-to-coast ratio has either an inverse or no effect on where pirate attacks occur.
 
 To observe this we have coded the arc length (shown in black) of the individual attacks that occur to show height of coastline-to-country ratios. If there is a tall arc, then the country has a proportionately higher coastal size. The expectation is therefore that fewer tall arcs should appear since these countries are actively patrolling and bordering their vulnerable coastlines.
+
  
 ![Global Overview Piracy and Maritime Defence Propensity](fig1.png)
 
@@ -80,18 +81,22 @@ This is not always the case, depending on region. Our H1 remains true for the ar
 
 However, the results change when shifting focus to the South China Sea. Despite Indonesia and the Philippines (highlighted in figure 1) having very long coastal lengths, a lot of attacks can be observed. This confirms our H0 null hypothesis, with contrary results occuring for Southeast Asian States.
 
+
+
 ![Regional Focus: Mediterranean and example of Malta](fig2.png) 
 
-<br>
 
+<div>
 ![Regional Focus: Piracy in the South Cina Sea (Indonesia highlighted)](fig3.png) 
 
 * H1: Stationary ships are more likely to be attacked than moving ships in Southeast Asia. 
 * H0: Stationary ships are no less, or less likely, to be attacked than moving ships in Southeast Asia.
 
 In this globe we take a regional focus for Southeast Asia. We can observe that whether a ship was moving (dot) or stationary (arc) appears to make little difference to the number of relative pirate attacks. This could be potentially due to the archipelago maritime geography; with many ports concentrated in a small area pirates may have similar accessibility to pirating trade both for anchored ships as well as for ships underway.
+</div>
 
-</br>
+
+
 
 ![Regional Focus: Piracy in the Gulf of Aden & Arabian Sea (Somalia highlighted)](fig4.png) 
 
@@ -102,3 +107,207 @@ Nb. Arc length indicates vessel status (moving to stationary)
 
 In this globe we take a regional focus for the Arabian Sea that includes the Gulf of Aden. We can observe that whether a ship was moving (dot) or stationary (arc) appears to make a large difference to the number of relative pirate attacks. Ships that were underway were more likely to be attacked. This is likely due to how large oceangoing ship traffic often transits through the Arabian Sea, but does not anchor. Pirates are therefore forced to conduct mobile pirate raids.
 
+# The Effect of Military Expenditure and of Armed Conflict on Piracy
+
+In order to approach the question about what drives piracy, we decided to take a multi pronged approach.  While the analysis that preceded this segment of the report focused on incident level data and visualizing it in a novel way for analytical purposes, this portion of our research focuses on aggregated yearly data for the eight countries that were the closest coastal state to the most frequent occurrences of piracy.  These countries are predominantly in South East Asia, but there are a few exemptions.  The countries are: Bangladesh, Brazil, India, Indonesia, Malaysia, Nigeria, the Philippines, and Vietnam.  
+
+While it is important to note that we could be skewing our data by both selecting for countries that are home to the most frequent occurrences of piracy as well as by aggregating our data to the year level.  However, by doing we also enable several advantages.  By aggregating the data, we are able to explore the information in a different way than either of the other two sections in this research paper.   Both of the other threads of research deal with incident level data which is useful, but here we can explore questions such as: what drives the number of attacks per year, does military expenditure play a role, are there any identifiable trends among the most heavily pirated countries? 
+
+We begin our aggregated data level analysis with a simple histogram showing the frequency of attacks sorted by the attacks per year in bins of 20. It quickly becomes evident, that the vast majority of years had 1-20 reported attacks. The frequency then declines sharply within the 20-40 range and then again in the 40-60 range. We see a slight surge in number of attacks per year within the 80-100 range; this is due to highly pirated coastal areas such as Bangladesh and the Philippines.
+
+```{r, echo=FALSE, message=FALSE}
+library(base)
+library(rio) # swiss army knife for imports
+library(plyr) # count occurences
+library(dplyr) # data wrangling
+library(tidyr) # data wrangling
+library(ggplot2) # nice plots
+library(stargazer) # nicer regression output which looks like a real publication
+library(car) # scatterplots 
+library(httr) # scraping from http sites
+library(XML) # Tool for generating XML file
+library(WDI) # Scraping Data from the World Bank 
+library(countrycode) # provides world bank country codes 
+library(gplots)
+library(plm)
+library(knitr)
+library(stargazer)
+#import data
+# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+
+#renaming and dropping some of our columns 
+names(shipping)[1] <- 'country'
+names(shipping)[2] <- 'year'
+shipping$X1 = NULL
+names(shipping)[3] <- 'coast/Area ratio (m/km2)'
+names(shipping)[4] <- 'GDP per cap'
+names(shipping)[5] <- 'attacks/Year'
+names(shipping)[6] <- 'successful Attacks/Year'
+names(shipping)[7] <- 'success Ratio'
+```
+```{r, echo=FALSE, fig.cap="Frequency of Attacks per Year in Bins"}
+hist(shipping$`attacks/Year`, main='Frequency of Attacks per Year in Bins', xlab='Number of Attacks per Year', ylab='Frequency')
+```
+
+
+
+
+
+When we examine the heterogeneity of attack success across countries it appears that a pirate's chance of a successful attack is highly dependent on the closest coastal state. For instance, the chances of a successful attack in the Philippines is lower than the odds of a successful attack in Bangladesh or Brazil. This also holds true when considering confidence intervals which are also depicted.
+```{r, echo=FALSE, fig.cap="Average Success Ratio of Pirates per Country"}
+plotmeans(shipping$`success Ratio` ~ country, main="Average Success Ratio of Pirates per Country", data=shipping, xlab="Country", ylab="Success Ratio")
+```
+The variable success rate was created by taking the number of successful attacks and dividing it by the number of attempted attacks. Thus, we can conclude that every pirate attack in India has a mean chance of 80% of success, with fairly large 95% confidence intervals stretching out from 85% to 75%, approximately. 
+
+
+
+
+When we examine the heterogeneity across years the means seem to stay within the .65 - .85 range. Thus, we can conclude that the average chance of a pirate attack succeeding is between 65% and 85%.  This of course depends on many variables such as year, country, and as well explore later, the military expenditure of those countries.  Due to extremely large confidence intervals, time does not appear to be statistically significant.
+
+```{r, echo=FALSE, fig.cap="Average Success Ratio of Pirates per Year"}
+plotmeans(shipping$`success Ratio` ~ year, main="Average Success Ratio of Pirates per Year", data=shipping, xlab="Year", ylab="Success Ratio")
+```
+
+Through various models, it became evident that this portion of our research, which was based off of aggregated yearly data, was much more apt at explaining the number of attacks per year instead of the success ratio of attacks.  This can be easily understood by a brief glance at our list of variables.  On the incident level we have indicators such as vessel type and vessel status, e.g., what kind of ship is it and what is it doing - moving or sitting still.  These factors play a much more significant role in predicting whether or not pirates will be successful. However, this current portion of the research allows us to include factors that our other models cannot such as GDP per capita in the closest coastal country, military expenditures, etc.   All of these factors are more strongly related to attack frequency, as we will show.
+
+Military expenditure proved to be a much stronger explanatory variable for predicting attacks per year than another variable which we attempted to add to our model, 'Intensity Level' which measures armed conflict in the area. 
+
+```{r, echo=FALSE, message=FALSE}
+#import data
+# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+ucdp.prio <- read.csv("124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+# have a look at how the variables are created
+
+names(ucdp.prio)[3] <- 'country'
+names(ucdp.prio)[2] <- 'year'
+
+ucdp.prio$ConflictId <- NULL
+ucdp.prio$SideA <- NULL
+ucdp.prio$SideA2nd <- NULL
+ucdp.prio$SideB <- NULL
+ucdp.prio$SideBID <- NULL
+ucdp.prio$SideB2nd <- NULL
+ucdp.prio$Incompatibility <- NULL
+ucdp.prio$TerritoryName <- NULL
+ucdp.prio$CumulativeIntensity <- NULL
+ucdp.prio$TypeOfConflict <- NULL
+ucdp.prio$StartDate <- NULL
+ucdp.prio$StartPrec <- NULL
+ucdp.prio$StartDate2 <- NULL
+ucdp.prio$StartPrec2 <- NULL
+ucdp.prio$EpEnd <- NULL
+ucdp.prio$EpEndDate <- NULL
+ucdp.prio$EpEndPrec <- NULL
+ucdp.prio$GWNoA <- NULL
+ucdp.prio$GWNoA2nd <- NULL
+ucdp.prio$GWNoB <- NULL
+ucdp.prio$GWNoB2nd <- NULL
+ucdp.prio$GWNoLoc <- NULL
+ucdp.prio$Region <- NULL
+ucdp.prio$Version <- NULL
+
+ucdp.prio <- ddply(ucdp.prio, .(country, year), numcolwise(sum))
+
+ship.ucdp <- merge(shipping, ucdp.prio, by=c("country","year"), all.x=TRUE) 
+remove(list=c("shipping"))
+remove(list=c("ucdp.prio"))
+
+ship.ucdp <- unique(ship.ucdp[ , 1:8 ] )
+
+ship.ucdp$IntensityLevel[is.na(ship.ucdp$IntensityLevel)] <- 0 
+
+#######################
+#adding military expenditure numbers
+######################
+#import data
+# empty cells are now coded with NA and can manually be excluded from any function with na.omit command
+Military <- read.csv("Military.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+# have a look at how the variables are created
+
+names(Military)[1] <- 'country'
+names(Military)[2] <- '1992'
+names(Military)[3] <- '1993'
+names(Military)[4] <- '1994'
+names(Military)[5] <- '1995'
+names(Military)[6] <- '1996'
+names(Military)[7] <- '1997'
+names(Military)[8] <- '1998'
+names(Military)[9] <- '1999'
+names(Military)[10] <- '2000'
+names(Military)[11] <- '2001'
+names(Military)[12] <- '2002'
+names(Military)[13] <- '2003'
+names(Military)[14] <- '2004'
+names(Military)[15] <- '2005'
+names(Military)[16] <- '2006'
+names(Military)[17] <- '2007'
+names(Military)[18] <- '2008'
+names(Military)[19] <- '2009'
+names(Military)[20] <- '2010'
+names(Military)[21] <- '2011'
+names(Military)[22] <- '2012'
+names(Military)[23] <- '2013'
+names(Military)[24] <- '2014'
+
+
+library(reshape)
+x2 <- melt(Military,id=c("country"),variable_name="Year")
+x2[,"Year"] <- as.numeric(gsub("X","",x2[,"Year"]))
+
+names(x2)[2] <- 'year'
+names(x2)[3] <- 'Military Expenditure'
+
+ship.ucdp.mil <- merge(ship.ucdp, x2, by=c("country","year"), all.x=TRUE) 
+remove(list=c("Military"))
+remove(list=c("x2"))
+remove(list=c("ship.ucdp"))
+```
+```{r, echo=FALSE, fig.cap="Visualizing the Affect of Military Expenditure on Piracy Rates"}
+plot(ship.ucdp.mil$`Military Expenditure`, ship.ucdp.mil$`attacks/Year`, main='Visualizing the affect of Military Expenditure on Piracy Rates', xlab='Military Expenditures', ylab='Number of Attacks per Year')
+```
+
+
+
+
+Unfortunately, including both an indicator for armed conflict in the closest coastal state as well as an indicator for military expenditure in the closest coastal states would prove to yield biased results due to multicollinarity.  As we can visually see, both potential indicators are correlated with each other.
+
+```{r, echo=FALSE, fig.cap="Visualizing the Correlation Between Armed Conflict and Military Expenditures"}
+plot(ship.ucdp.mil$IntensityLevel, ship.ucdp.mil$`Military Expenditure`, main='Visualizing the Correlation Between Armed Conflict and Military Expenditures', xlab='Conflict Intensity', ylab='Military Expenditures')
+```
+
+This finding is actually quite intuitive as states that have armed conflict are likely to increase their military expenditure.  
+
+Below is a table of both our OLS regressions and Fixed Effects Regressions. Although OLS regression does not consider heterogeneity across groups or time, an OLS regression can still prove useful for gathering initial insight into the relationship of our variables.
+
+Our analysis does show that when running an OLS regression, military expenditure indeed has a statistically significant relationship with the frequency of attacks with a negative coefficient of -15.32 at a P value lower than .01%.  Additionally, this statistically significant relationship and negative coefficient remain essentially constant as we add control variables such as coast ratio and GDP per capita.  Our model consistently explains 14-15% of the variation in attacks per year as indicated by our R2.  This confirms our earlier plot graph's visual results.  Interestingly, neither GDP per capita nor coastline ratio proved to be statically significant in this model for explaining the frequency of piracy attacks.  
+
+Unfortunately when we ran a Fixed Effects regression on the data, military expenditure was no longer statistically significant when ran by itself.  Interestingly, military expenditure does become significant (at the .1 level) once GDP per capita has been added. Again the coefficient yielding is negative and are similar to the OLS results.
+
+```{r, echo=FALSE, message=FALSE}
+ols1 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$IntensityLevel, data=ship.ucdp.mil)
+
+ols2 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil)
+
+ols3 <-lm(ship.ucdp.mil$`attacks/Year` ~ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`coast/Area ratio (m/km2)`, data=ship.ucdp.mil)
+
+ols4 <-lm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`coast/Area ratio (m/km2)` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil)
+
+fixed1 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure`, data=ship.ucdp.mil, index=c("country", "year"), model="within")
+
+fixed2 <- plm(ship.ucdp.mil$`attacks/Year` ~ ship.ucdp.mil$`Military Expenditure` + ship.ucdp.mil$`GDP per cap`, data=ship.ucdp.mil, index=c("country", "year"), model="within")
+```
+
+Stargazer
+
+![Table of OLS and Fixed Effects Regression Models](fig8.png)
+
+# Micro Level: Determinants for successful piracy attacks
+
+Digging deeper into the field of maritime piracy studies reveals that patterns of maritime piracy changed over time and per region. Among the many incidents in global hotspots for piracy, not all incidents are successful. But why are some pirates more successful than others? Whilst we understand that the danger of an attack differs depending on some few characteristics, it is possible to change behaviour and protect the crew and the cargo. The idea for this research paper is, thus, to identify under which circumstances an attack is successful. What has determined the success rate of maritime piracy attacks during 1995 and 2014?
+
+In theory there are many possible factors that influence the process of a piracy attack at sea. I expect that, among others, the risk of an attack being successful changes with the ship type, the time of day and whether a ship is in motion or not. For these predictors I would like to make the following hypotheses:
+
+* H1. The success rate of an attacks shrinks for big ships,
+* H2. And for vessels in motion, 
+* H3. And during the day.
