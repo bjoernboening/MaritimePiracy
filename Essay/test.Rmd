@@ -380,7 +380,7 @@ sub$stat = NULL
 
 Digging deeper into the field of maritime piracy studies reveals that patterns of maritime piracy changed over time and per region. Among the many incidents in global hotspots for piracy, not all incidents are successful. But why are some pirates more successful than others? Whilst we understand that the danger of an attack differs depending on some few characteristics, it is possible to change behaviour and protect the crew and the cargo. The idea for this research paper is, thus, to identify under which circumstances an attack is successful. What has determined the success rate of maritime piracy attacks during 1995 and 2014?
 
-```{r, echo=FALSE, fig.cap="Frequency of attempted and successful attacks", fig.height=2, fig.width=2}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Frequency of attempted and successful attacks", fig.height=2.5, fig.width=2.5}
 # barplot for frequency of attacks
 a <- ggplot(data=na.omit(sub), aes(x=incident))
 a + geom_bar(stat="bin") +
@@ -396,5 +396,87 @@ In theory there are many possible factors that influence the process of a piracy
 * H2. And for vessels in motion, 
 * H3. And during the day.
 
+<<<<<<< HEAD
+=======
+## Micro Level: Data Description
 
+In this section we try to make sense of the data, and explain in which format it will be used for the analysis.
+
+The original data comes from the International Maritime Bureau, or IMB. Since 1991 they gather global piracy incidents in a standardized format and publish some statistics and their raw data in an annual report. A research team around Professor Christian Traxler from the Hertie School of Governance parsed the data out of the annual reports in PDF format, and merged them into one dataset about piracy attacks from 1993 to 2011 (counts 5619 attacks). As a courtesy from Professor Ursula Daxecker from the University of Amsterdam, I received a ready-to-use dataset, which as a subset of the original data contains slightly differently coded and less variables for the analysis from 1993 to 2014 (counts 6.343 attacks). 
+
+The unit of analysis in all datasets is the single attack, or in other words one row equals one attack. As my analysis builds up on the dataset from Professor Daxecker, in the following I will refer to her version of the dataset solely. The dataset comes already slightly reduced. It contains 25 variables, and counts 6.343 attacks in between 1993 and 2014. I kept the wide format of the dataset, but reduced it to the variables of interest. In more concrete terms, you will find a binary coded dependent variable for the incident type, or whether an attack was successful or not. The explanatory variables are the ship type, adjusted depending on the model, the ship's status, or if it is moving or not and a time of day variable splitting one day into 4 time categories. Still, the necessary variables needed some wrangling. I cleaned them from missing and nonsensical values, renamed the variable and value labels, and grouped some categories of the key categorical variables.
+
+We ended up with attacks in between 1995 and 2014. Take a look at the graph below to get a first idea of how they are distributed.
+>>>>>>> origin/master
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Attempted and actual Attacks over years"}
+#barcharts yaxis indicidents and xaxis for years
+e <- ggplot(na.omit(sub), aes(year, ..count..)) 
+e + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Years") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks in different years")
+```
+
+\pagebreak
+Given this graph one might ask, why are there spikes in 2003 and 2008 to 2011, or vice versa why are there so few attacks reported in 1997 to 2000? The latter question is hard to answer, as the attacks are self-reported. It is known, however, that in the early days of the data gathering not many crews were aware of the IMB and its new mission to understand (and finally lower the risk of) piracy.
+
+Apparently it first needed a critical mass to get the thing rolling, and furthermore modern technologies made it easy to send a report quickly. The spikes already give an idea of how contemporary piracy developed. The year 2003 was certainly the most dangerous year of piracy in Indonesia , and from 2007 until 2012 Somalia is accountable for the vast majority of piracy attacks.
+
+The original dataset specifies 10 different ship types. We will analyse small and big ships, as they are inherently different in difficulty and possible revenue for an attacker. Therefore, we split up the dataset into two groups that are potentially interesting to be analysed. One group contains (1) Carriers that are big ships for instance transporting hundreds of cars from one continent to another, (2) tankers that are likewise very big and powerful, but are potentially more dangerous because they can carry inflammable or hazardous goods. 
+
+The second group consists of small ships that are less under attack as they normally do not carry very valuable goods. In most cases the pirates aim for ransom notes, as they potentially bring the desired return on investment. Nevertheless it makes sense to see what the difference is in the risk of big and small ships to being successfully attacked.
+
+
+```{r, echo=FALSE, fig.cap="Attacks on small and big ships"}
+#barcharts yaxis indicidents and xaxis for predictors
+b <- ggplot(na.omit(sub), aes(type, ..count..)) 
+b + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Type") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks on different ship types")
+```
+
+## Significance Tests
+
+Back again to the initial research question, why are some attacks successful and some are not?
+
+Now let's see, whether our key variables for the planned model are significant. As we deal only with categorical variables, the best option to test that is a Chi-Square Test. In the following you will see the summaries for all key variables, namely the vessel type (for big and small ships), their status (moving or stationary), and the time of day (early, day, evening, night).
+
+```{r, echo=FALSE}
+tab <- table(na.omit(sub)$incident,na.omit(sub)$type) # A will be rows, B will be columns 
+tab1 <- table(na.omit(sub)$incident,na.omit(sub)$status) # A will be rows, B will be columns 
+tab2 <- table(na.omit(sub)$incident,na.omit(sub)$time) # A will be rows, B will be columns 
+```
+
+### Ship Type
+
+```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Type", fig.align='left'}
+summary(tab)
+```
+
+First let us inspect the variable for the ships' type. With this high chi square value there is evidence that the relationship between the two variable is indeed very strong and is likely to be observed in the larger population out of our sample as well.
+
+### Ship Status
+
+Second variable of interest is a vessel's status. The extraordinary high chi square value leaves no doubt. Both variables are strongly related, and it is very likely to find this relationship not only in our sample.
+
+```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Ship Status", fig.align='left'}
+summary(tab1)
+```
+
+### Time of Day
+
+Likewise, the chi-square value suggests that the time variable is strongly related with the dependent variable for piracy attacks. 
+
+```{r, echo=FALSE, tidy=TRUE, fig.cap="Summary Statistics for Time of Day", fig.align='left'}
+summary(tab2)
+```
+
+
+After all we can conclude, that all presented variables do matter for determining whether an attack is successful or not. The status has by far the strongest relationship, followed by the ship type. The weakest relationship has time of day, but it is still highly significant. 
+
+## Modelling
+
+In this section we will present models based on the initial assumptions, and on the information gained in the data preparation and descriptive statistics section. A simple logistic regression will be applied in all three models, where the reference category always follows the assumption from the hypotheses, or in other words we want to calculate the odds ratios for the events that we expect to have a lower risk of a successful attack.
 
