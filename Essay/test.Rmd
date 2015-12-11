@@ -304,10 +304,100 @@ Stargazer
 
 # Micro Level: Determinants for successful piracy attacks
 
+```{r, echo=FALSE, message=FALSE}
+# Call libraries we need for the project, make sure you have them installed
+library(base)
+library(rio) # swiss army knife for imports
+library(plyr) # count occurences
+library(dplyr) # data wrangling
+library(tidyr) # data wrangling
+library(ggplot2) # nice plots
+library(stargazer) # nicer regression output which looks like a real publication
+library(car) # scatterplots 
+library(httr) # scraping from http sites
+library(XML) # Tool for generating XML file
+library(WDI) # Scraping Data from the World Bank 
+library(countrycode) # provides world bank country codes 
+library(gplots)
+library(plm)
+library(knitr)
+library(Hmisc) # variable labels
+library(Amelia) # map missing values 
+micro <- read.csv("MaritimePiracyTennessee.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+sub <- micro[c(4, 6, 12, 18, 24, 23)]
+######
+#DATA WRANGLING
+######
+
+#renaming and recoding
+names(sub)[1] <- 'year'
+
+names(sub)[2] <- 'time'
+sub$time <- factor(sub$time,
+                    levels = c(1,2,3,4),
+                    labels = c("early", "day", "evening", "night"))
+sub$time <- factor(sub$time)
+
+names(sub)[3] <- 'state'
+
+names(sub)[4] <- 'type'
+sub$type[sub$type==1] <- 111
+sub$type[sub$type==5] <- 111
+sub$type[sub$type==9] <- 111
+sub$type[sub$type==2] <- 222
+sub$type[sub$type==3] <- 222
+sub$type[sub$type==4] <- 222
+sub$type[sub$type==6] <- 222
+sub$type[sub$type==7] <- 222
+sub$type[sub$type==8] <- 222
+sub$type[sub$type==111] <- 1
+sub$type[sub$type==222] <- 2
+sub$type[sub$type==-99] <- NA
+sub$type[sub$type==10] <- NA
+sub$type[sub$type==22] <- NA
+sub$type[sub$type==696] <- NA
+sub$type <- factor(sub$type,
+                   levels = c(1,2),
+                   labels = c("small", "big"))
+sub$type <- factor(sub$type)
+
+names(sub)[5] <- 'incident'
+sub$incident[sub$incident==-99] <- NA
+sub$incident <- factor(sub$incident,
+                   levels = c(0,1),
+                   labels = c("attempted", "acutal"))
+sub$incident <- factor(sub$incident)
+
+names(sub)[6] <- 'stat'
+sub$stat[sub$stat==-99] <- NA
+sub$stat <- factor(sub$stat,
+                    levels = c(1,2,3,4))
+sub$status <- recode(sub$stat, "c(1)='2'; c(2,3,4)='1'") # what a bastard this line was arrgg
+sub$status <- factor(sub$status,
+                   levels = c(1,2),
+                   labels = c("stationary", "moving"))
+sub$status <- factor(sub$status)
+sub$stat = NULL
+```
+
 Digging deeper into the field of maritime piracy studies reveals that patterns of maritime piracy changed over time and per region. Among the many incidents in global hotspots for piracy, not all incidents are successful. But why are some pirates more successful than others? Whilst we understand that the danger of an attack differs depending on some few characteristics, it is possible to change behaviour and protect the crew and the cargo. The idea for this research paper is, thus, to identify under which circumstances an attack is successful. What has determined the success rate of maritime piracy attacks during 1995 and 2014?
+
+```{r, echo=FALSE, fig.cap="Frequency of attempted and successful attacks", fig.height=2, fig.width=2}
+# barplot for frequency of attacks
+a <- ggplot(data=na.omit(sub), aes(x=incident))
+a + geom_bar(stat="bin") +
+  xlab("Incidents") +
+  ylab("Frequency") +
+  ggtitle("Frequency of Attacks")
+```
+
 
 In theory there are many possible factors that influence the process of a piracy attack at sea. I expect that, among others, the risk of an attack being successful changes with the ship type, the time of day and whether a ship is in motion or not. For these predictors I would like to make the following hypotheses:
 
 * H1. The success rate of an attacks shrinks for big ships,
 * H2. And for vessels in motion, 
 * H3. And during the day.
+
+
+
+
