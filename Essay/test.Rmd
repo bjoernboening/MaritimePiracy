@@ -421,4 +421,17 @@ Given this graph one might ask, why are there spikes in 2003 and 2008 to 2011, o
 
 Apparently it first needed a critical mass to get the thing rolling, and furthermore modern technologies made it easy to send a report quickly. The spikes already give an idea of how contemporary piracy developed. The year 2003 was certainly the most dangerous year of piracy in Indonesia , and from 2007 until 2012 Somalia is accountable for the vast majority of piracy attacks.
 
+\newpage
+The original dataset specifies 10 different ship types. We will analyse small and big ships, as they are inherently different in difficulty and possible revenue for an attacker. Therefore, we split up the dataset into two groups that are potentially interesting to be analysed. One group contains (1) Carriers that are big ships for instance transporting hundreds of cars from one continent to another, (2) tankers that are likewise very big and powerful, but are potentially more dangerous because they can carry inflammable or hazardous goods. 
 
+The second group consists of small ships that are less under attack as they normally do not carry very valuable goods. In most cases the pirates aim for ransom notes, as they potentially bring the desired return on investment. Nevertheless it makes sense to see what the difference is in the risk of big and small ships to being successfully attacked.
+
+
+```{r, echo=FALSE, fig.cap="Attacks on small and big ships"}
+#barcharts yaxis indicidents and xaxis for predictors
+b <- ggplot(sub, aes(type, ..count..)) 
+b + geom_bar(aes(fill = incident), position = "dodge") +
+  xlab("Type") + 
+  ylab("Incidents") + 
+  ggtitle("Frequency of Attacks on different ship types")
+```
