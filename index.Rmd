@@ -1,14 +1,16 @@
 ---
 title: "Determinants of Maritime Piracy"
 author: "Bjoern Boening, Cody Koebnick, Laurence Hendry"
-date: "12. November 2015"
+date: "10 December 2015"
 output:
   html_document: default
   pdf_document:
     number_section: yes
+    toc: yes
+    fig_caption: yes
 ---
-```{r, echo=FALSE, message=FALSE}
-#helpful shortcuts for editing what is includeded in Knitr: http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#helpful shortcuts for editing what is includeded in Knitr: #http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html
 library(base)
 library(rio) # swiss army knife for imports
 library(plyr) # count occurences
@@ -27,12 +29,9 @@ library(knitr)
 library(threejs)
 library(maptools)
 library(maps)
+library(Amelia)
 
-
-try()
-try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy"),silent=TRUE) 
-try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"),silent=TRUE)
-shipping <- read.csv("shippingraw.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
+shipping <- read.csv("Data/shippingraw.csv", header = FALSE, sep = ",", stringsAsFactors = FALSE, na.strings = c("", "NA"))
 
 #renaming and dropping some of our columns 
 names(shipping)[1] <- 'country'
