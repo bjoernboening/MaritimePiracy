@@ -1,7 +1,7 @@
 #########################################################
 #### Maritime Piracy Data Analysis ######################
 #########################################################
-#### by Laurence Hendry, Cody Koebnick, and BjÃ¶rn Boening
+#### by Laurence Hendry, Cody Koebnick, and Bjoern Boening
 
 # Import the dataset about piracy attacks into your wd 
 # Call libraries we need for the project, make sure you have them installed
@@ -25,7 +25,7 @@ library(stargazer)
 
 # set working directories 
 try(setwd("/Users/codykoebnick/Documents/MaritimePiracy"))
-try(setwd("E:/bjoer/Documents/Google Drive/Universität/Hertie/03_Fall 2015/05_Master Thesis/00_Piracy_2015-16/03_Data/Tennessee"))
+try(setwd("E:/bjoer/Documents/GitHub/MaritimePiracy"))
 getwd()
 try(setwd("/Users/laurencehendry/GitHub/MaritimePiracy")) 
 getwd()
